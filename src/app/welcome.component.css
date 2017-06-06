@@ -1,0 +1,16 @@
+h1, h3, div {
+    text-align: center;
+}
+footer {
+    background-color: #2a2730;
+    color: #99979c;
+    margin-top: 30px;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+.welcome-footer {
+    text-align: left;
+}
+.welcome-footer li {
+    display: inline-block;
+}
