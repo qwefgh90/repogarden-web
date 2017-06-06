@@ -1,37 +1,45 @@
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
+  <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" [attr.aria-expanded]="!isCollapsed" (click)="toggleCollapse()" [ngClass]="{'collapsed': isCollapsed}">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Repogarden</a>
-    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" [attr.aria-expanded]="!isCollapsed" (click)="toggleCollapse()" [ngClass]="{'collapsed': isCollapsed}">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Repogarden</a>
+        </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" [ngClass]="{'in': !isCollapsed}">
-      <ul class="nav navbar-nav">
-        <li><a href="#">Author</a></li> 
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="isLogin()">
-          <a href="#" dropdown dropdownToggle>@@<span class="caret" (onShown)="onShown()"></span>
-            <ul *dropdownMenu class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="#">Me</a>
-                <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
-              </li>
-            </ul>
-          </a>
-        </li>
-        <li *ngIf="!isLogin()">
-          <a href="javascript:void(0)" (click)="login();">Sign up</a>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" [ngClass]="{'in': !isCollapsed}">
+          <ul class="nav navbar-nav">
+            <li></li> 
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li *ngIf="isLogin()">
+              <a href="javascript:void(0)" dropdown dropdownToggle>@@<span class="caret" (onShown)="onShown()"></span>
+                <ul *dropdownMenu class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="/profile">Me</a>
+                    <a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Logout</a>
+                  </li>
+                </ul>
+              </a>
+            </li>
+            <li *ngIf="!isLogin()">
+              <a href="javascript:void(0)" (click)="login();">Sign up</a>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div>
+    </div><!-- /.row -->
+  </div><!-- /.container -->
 </nav>
+
 <router-outlet></router-outlet>
+
+
+

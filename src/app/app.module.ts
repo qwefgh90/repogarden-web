@@ -18,6 +18,7 @@ import { AuthService } from './auth.service';
 import { LogoutComponent } from './logout/logout.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
 //bootstrap
 
 @NgModule({
@@ -27,6 +28,7 @@ import { HomeComponent } from './home/home.component';
         LoginComponent,
         LogoutComponent,
         HomeComponent,
+        ProfileComponent,
     ],
     imports: [
         BrowserModule,
@@ -36,6 +38,11 @@ import { HomeComponent } from './home/home.component';
             {
                 path: '',
                 component: HomeComponent,
+                canActivate: [AuthGuardService]
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent,
                 canActivate: [AuthGuardService]
             },
             {
