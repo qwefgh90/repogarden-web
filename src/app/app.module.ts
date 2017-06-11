@@ -7,19 +7,24 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome.component';
 import { LoginComponent } from './login/login.component';
-import { AuthGuardService } from './auth-guard.service';
 
 import { fakeBackendProvider } from './_helpers/index';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 
 //service
+import { ProfileService } from './profile.service';
+import { AuthGuardService } from './auth-guard.service';
+import { RepositoryService } from './repository.service';
 import { AuthService } from './auth.service';
 import { LogoutComponent } from './logout/logout.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
+
+
 //bootstrap
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @NgModule({
     declarations: [
@@ -52,11 +57,14 @@ import { ProfileComponent } from './profile/profile.component';
             // otherwise redirect to home
             { path: '**', redirectTo: '' }
         ]),
-        BsDropdownModule.forRoot()
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot()
     ],
     providers: [
         AuthGuardService,
         AuthService,
+        RepositoryService,
+        ProfileService,
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,

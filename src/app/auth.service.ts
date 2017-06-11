@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Router, ActivatedRoute, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
+import { ProfileService } from './profile.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/toPromise';
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class AuthService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
-    constructor(private http: Http, private router: Router, private activatedRoute: ActivatedRoute) {
+    constructor(private http: Http, private router: Router, private activatedRoute: ActivatedRoute, private profileService: ProfileService) {
         
     }
 
@@ -23,6 +23,7 @@ export class AuthService {
             let user = response.json();
             if (user && user.token) {
                 localStorage.setItem('currentUser', JSON.stringify(user));
+                this.profileService.setUserInfo(user);
                 let returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'];
                 console.log(returnUrl);
                 if(returnUrl == undefined)

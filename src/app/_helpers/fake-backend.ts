@@ -1,5 +1,7 @@
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHRBackend, RequestOptions, Headers } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
+import { REPOSITORIES } from '../mock/mock-repositories';
+
 
 export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
     // array in local storage for registered users
@@ -9,6 +11,14 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
     backend.connections.subscribe((connection: MockConnection) => {
         // wrap in timeout to simulate server api call
         setTimeout(() => {
+            if (connection.request.url.split('?')[0].endsWith('/repositories') && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: REPOSITORIES
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
             if (connection.request.url.split('?')[0].endsWith('/login') && connection.request.method === RequestMethod.Post) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,

@@ -15,6 +15,15 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Custom
           </div>
         </div>
+        <div class="row" *ngFor="let repository of repositories">
+          <div class="btn-group">
+            <label class="btn btn-success" [(ngModel)]="repository.activated" btnRadio="on"
+                   uncheckable>On</label>
+            <label class="btn btn-success" [(ngModel)]="repository.activated" btnRadio="off"
+                   uncheckable>Off</label>
+          </div>
+          <a href="{{repository.accessLink}}">{{userInfo.id}}/{{repository.name}}</a>
+        </div>
       </div>
     </div>
   </div>
