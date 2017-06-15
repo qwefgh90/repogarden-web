@@ -1,6 +1,7 @@
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHRBackend, RequestOptions, Headers } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { REPOSITORIES } from '../mock/mock-repositories';
+import { AUTH_RESPOND } from '../mock/mock-user-info';
 
 
 export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
@@ -22,13 +23,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
             if (connection.request.url.split('?')[0].endsWith('/login') && connection.request.method === RequestMethod.Post) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
-                    body: {
-                        id: 'qwefgh90',
-                        username: 'leadersama',
-                        firstName: 'changwon',
-                        lastName: 'choe',
-                        token: 'fake-jwt-token'
-                    }
+                    body: AUTH_RESPOND
                 })));
                 console.info(JSON.stringify(connection.request));
                 return;

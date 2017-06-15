@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 export class ProfileService {
     constructor() { }
     private userInfo: ReplaySubject<UserInfo> = new ReplaySubject<UserInfo>(1);
-    getUserInfo(): Observable<UserInfo> {
+    getObservableUserInfo(): Observable<UserInfo> {
         return this.userInfo;
     }
     setUserInfo(userInfo: UserInfo) {

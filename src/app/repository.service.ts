@@ -9,19 +9,12 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 @Injectable()
 export class RepositoryService {
     private repositoriesUrl = 'api/repositories';
-    private repositories = new ReplaySubject<Repository[]>();
-
     constructor(private http: Http) { }
 
-    getRepositories(): Observable<Repository[]> {
-        this.http.get(this.repositoriesUrl)
+    getRepositories(): Promise<Repository[]> {
+        return this.http.get(this.repositoriesUrl)
+            .map(response => response.json() as Repository[])
             .toPromise()
-            .then(response => {
-                let repositories = response.json() as Repository[];
-                this.repositories.next(repositories);
-            })
-            .catch(this.handleError);
-        return this.repositories;
     }
 
     private handleError(error: any) {

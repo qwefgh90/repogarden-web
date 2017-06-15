@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
+import { UserInfo } from './class/user-info'
 
 @Component({
     selector: 'app-root',
@@ -7,7 +8,9 @@ import { AuthService } from './auth.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService) {
+
+    }
 
     title = 'app works! Bootstrap';
     isCollapsed: boolean = true;

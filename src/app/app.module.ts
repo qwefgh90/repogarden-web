@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome.component';
 import { LoginComponent } from './login/login.component';
 
-import { fakeBackendProvider } from './_helpers/index';
+import { fakeBackendProvider } from './mock/fake-backend';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 
@@ -21,7 +21,6 @@ import { LogoutComponent } from './logout/logout.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-
 
 //bootstrap
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -46,7 +45,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
                 canActivate: [AuthGuardService]
             },
             {
-                path: 'profile',
+                path: 'profile/:id',
                 component: ProfileComponent,
                 canActivate: [AuthGuardService]
             },

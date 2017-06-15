@@ -3,6 +3,7 @@ import { Http, Headers, Response } from '@angular/http';
 import { Router, ActivatedRoute, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { Observable } from 'rxjs/Observable';
+import { UserInfo } from './class/user-info';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/toPromise';
 
@@ -11,7 +12,10 @@ import 'rxjs/add/operator/toPromise';
 export class AuthService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
     constructor(private http: Http, private router: Router, private activatedRoute: ActivatedRoute, private profileService: ProfileService) {
-        
+        let currentUser = localStorage.getItem('currentUser');
+        if (currentUser != undefined) {
+            this.profileService.setUserInfo(JSON.parse(currentUser) as UserInfo);
+        }
     }
 
     private sessionCreated: boolean = false;
@@ -23,10 +27,9 @@ export class AuthService {
             let user = response.json();
             if (user && user.token) {
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                this.profileService.setUserInfo(user);
+                this.profileService.setUserInfo(user as UserInfo);
                 let returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'];
-                console.log(returnUrl);
-                if(returnUrl == undefined)
+                if (returnUrl == undefined)
                     this.router.navigate(['/'], {});
                 else
                     this.router.navigate([returnUrl], {});
@@ -42,4 +45,6 @@ export class AuthService {
     isLogin(): boolean {
         return localStorage.getItem('currentUser') != undefined;
     }
+
+
 }
