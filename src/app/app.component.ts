@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
-import { UserInfo } from './class/user-info'
+import { UserInfo } from './class/user-info';
+import { ProfileService } from './profile.service';
 
 @Component({
     selector: 'app-root',
@@ -8,14 +9,17 @@ import { UserInfo } from './class/user-info'
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(private authService: AuthService) {
-
+    constructor(private authService: AuthService, private profileService: ProfileService) {
+        this.profileService.getObservableUserInfo().map(userInfo => userInfo.id).subscribe(id => {
+            this.userId = id;
+        });
     }
 
-    title = 'app works! Bootstrap';
+    userId: string;
+
     isCollapsed: boolean = true;
 
-    public onShown(): void {
+    onShown(): void {
         console.log('Dropdown is shown');
     }
 

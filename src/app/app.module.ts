@@ -24,6 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 
 //bootstrap
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
             { path: '**', redirectTo: '' }
         ]),
         BsDropdownModule.forRoot(),
-        ButtonsModule.forRoot()
+        ButtonsModule.forRoot(),
+        TooltipModule.forRoot()
     ],
     providers: [
         AuthGuardService,
