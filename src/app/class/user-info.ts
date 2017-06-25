@@ -1,7 +1,7 @@
 export class UserInfo {
-    id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    expiredDate: Date;
+    constructor(readonly id, readonly username, readonly firstName, readonly lastName, readonly expiredDate, readonly imgUrl) {
+    }
+    public getProfileUrl(): string {
+        return `https://github.com/${this.id}`;
+    };
 }

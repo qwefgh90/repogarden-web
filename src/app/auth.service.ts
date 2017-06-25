@@ -13,8 +13,10 @@ export class AuthService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
     constructor(private http: Http, private router: Router, private activatedRoute: ActivatedRoute, private profileService: ProfileService) {
         let currentUser = localStorage.getItem('currentUser');
+        let user = JSON.parse(currentUser);
         if (currentUser != undefined) {
-            this.profileService.setUserInfo(JSON.parse(currentUser) as UserInfo);
+            this.profileService.setUserInfo(new UserInfo(user.id, user.username,
+                user.firstName, user.lastName, user.expiredDate, user.imgUrl));
         }
     }
 
@@ -27,7 +29,8 @@ export class AuthService {
             let user = response.json();
             if (user && user.token) {
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                this.profileService.setUserInfo(user as UserInfo);
+                this.profileService.setUserInfo(new UserInfo(user.id, user.username,
+                    user.firstName, user.lastName, user.expiredDate, user.imgUrl));
                 let returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'];
                 if (returnUrl == undefined)
                     this.router.navigate(['/'], {});

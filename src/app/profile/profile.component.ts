@@ -17,7 +17,7 @@ import { UserInfo } from '../class/user-info';
 export class ProfileComponent implements OnInit {
     public repositories: Repository[] = [];
     public activeCount: number = 0;
-    public userInfo: UserInfo = new UserInfo();
+    public userInfo: UserInfo;
     public radioButtonDetector: BehaviorSubject<number>;//detect radio button's change
     constructor(private repositoryService: RepositoryService, private profileService: ProfileService) {
         repositoryService.getRepositories().then(repositories => {

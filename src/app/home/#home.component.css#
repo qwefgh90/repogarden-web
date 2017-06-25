@@ -1,8 +1,0 @@
-.repository-outer-box {
-    margin-left: 10px;
-    marign-right: 10px;
-    margin-bottom: 5px;
-    border-width: 1px;
-    border-style: solid;
-}
-

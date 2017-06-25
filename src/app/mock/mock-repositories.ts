@@ -1,7 +1,7 @@
 import { Repository } from '../class/repository';
 
 export const REPOSITORIES: Repository[] = [
-    {name: 'opencv', accessLink: 'http://www.naver.com', activated: "on"},
-    {name: 'repos', accessLink: 'http://www.naver.com', activated: "off"},
-    {name: 'algorithm', accessLink: 'http://www.naver.com', activated: "on"}
+    new Repository('opencv', 'http://www.naver.com', "on"),
+    new Repository('repos', 'http://www.naver.com', "off"),
+    new Repository('algorithm', 'http://www.naver.com', "on")
 ];
