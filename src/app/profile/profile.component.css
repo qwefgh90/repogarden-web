@@ -2,3 +2,13 @@
     padding-left:0px;
     padding-right:0px;
 }
+
+.repository-item {
+    margin-bottom: 8px;
+    padding-left: 4px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.row > .btn-group {
+    bottom: 4px; /*relative position*/
+}

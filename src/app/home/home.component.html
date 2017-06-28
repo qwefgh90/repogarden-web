@@ -1,29 +1,35 @@
 <div class="container">
   <div style="text-align:center;margin-bottom:20px;">
     <h1><img src="{{userInfo.imgUrl}}" alt="Profile image"/></h1>
-    <h3><a target="_blank" href="{{userInfo.getProfileUrl()}}">{{userInfo.id}}</a></h3>
+    <h3><a target="_blank" href="{{userInfo.getProfileGithubUrl()}}">{{userInfo.id}}</a></h3>
   </div>
   <div class="row">
     <div class="col-sm-12">
       <div class="repository-outer-box" *ngFor="let repo of repositories">
         <div class="reponame-box">
-          <a target="_blank" href="{{repo.getRepoUrl(userInfo.id)}}" class="" style="font-size:large;">{{userInfo.id}}/{{repo.name}}</a>
+          <a routerLink="/{{userInfo.id}}/{{repo.name}}" class="" style="font-size:large;">{{userInfo.id}}/{{repo.name}}</a>
+          <button class="btn btn-xs btn-success" style="float:right" *ngIf="repo.activated == 'on'" routerLink="{{userInfo.getProfilePath()}}">running</button>
+          <button class="btn btn-xs" style="float:right" *ngIf="repo.activated == 'off'" routerLink="{{userInfo.getProfilePath()}}">stopped</button>
         </div>
         <div>
-          <span>vulnerable level:</span>
-          <button class="btn btn-xs btn-danger" [tooltip]="popTemplate" placement="right" triggers="click:click">danger</button>
+          <span>vulnerable: </span>
+          <button class="btn btn-xs btn-danger" [tooltip]="popTemplate" placement="right" triggers="click:click" *ngIf="repo.cves.length >= 1" (click)="closeTooltip(popTemplate2)">fix it</button>
+          <button class="btn btn-xs btn-success" *ngIf="repo.cves.length == 0">clear</button>
           <template #popTemplate>
-            <header><span>Header</span>
-              <span class="glyphicon glyphicon-remove clickable"></span>
+            <header><span>CVE List</span>
+              <span class="glyphicon glyphicon-remove clickable" (click)="closeTooltip(popTemplate);"></span>
             </header>
-            <div>body</div></template>
+            <div>
+                <div *ngFor="let cve of repo.cves"><a href="#">{{cve.cve}}</a></div>
+            </div>
+          </template>
         </div>
         <div>
-          <span>typo count:</span>
-          <button class="btn btn-xs" [tooltip]="popTemplate2" placement="right" triggers="click:click">3</button>
+          <span>typo: </span>
+          <button class="btn btn-xs" [tooltip]="popTemplate2" placement="right" triggers="click:click" (click)="closeTooltip(popTemplate)">3</button>
           <template #popTemplate2>
             <header><span>Header</span>
-              <span class="glyphicon glyphicon-remove clickable"></span>
+              <span class="glyphicon glyphicon-remove clickable" (click)="closeTooltip(popTemplate2)"></span>
             </header>
             <div>body</div></template>
         </div>

@@ -9,5 +9,6 @@ export const AUTH_RESPOND = {
     firstName: 'changwon',
     lastName: 'choe',
     token: 'fake-jwt-token',
-    expiredDate: expiredDate
+    expiredDate: expiredDate,
+    imgUrl: ''
 };

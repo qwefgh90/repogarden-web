@@ -25,6 +25,12 @@ import { ProfileComponent } from './profile/profile.component';
 //bootstrap
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { RepositoryMasterComponent } from './repository-master/repository-master.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { RepositoryCveDetailComponent } from './repository-cve-detail/repository-cve-detail.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { DebounceDirective } from './debounce.directive';
+import { RepositoryTypoDetailComponent } from './repository-typo-detail/repository-typo-detail.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +40,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
         LogoutComponent,
         HomeComponent,
         ProfileComponent,
+        RepositoryMasterComponent,
+        RepositoryCveDetailComponent,
+        DebounceDirective,
+        RepositoryTypoDetailComponent,
     ],
     imports: [
         BrowserModule,
@@ -51,6 +61,11 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
                 canActivate: [AuthGuardService]
             },
             {
+                path: ':id/:repository',
+                component: RepositoryMasterComponent,
+                canActivate: [AuthGuardService]
+            },
+            {
                 path: 'welcome',
                 component: WelcomeComponent
             },
@@ -59,7 +74,9 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
         ]),
         BsDropdownModule.forRoot(),
         ButtonsModule.forRoot(),
-        TooltipModule.forRoot()
+        TooltipModule.forRoot(),
+        CollapseModule.forRoot(),
+        TabsModule.forRoot()
     ],
     providers: [
         AuthGuardService,

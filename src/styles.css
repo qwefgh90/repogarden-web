@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+span.clickable:hover {
+    cursor: pointer;
+}
+
+div.content-box:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.equal {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
+.outer-box {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+}

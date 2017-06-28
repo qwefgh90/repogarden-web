@@ -2,7 +2,7 @@ import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHR
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { REPOSITORIES } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
-
+import { Repository } from '../class/repository';
 
 export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
     // array in local storage for registered users
@@ -20,6 +20,32 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 console.info(JSON.stringify(connection.request));
                 return;
             }
+
+            if (connection.request.url.split('?')[0].match(/repositories\/([^\/]+)\/([^\/]+)/) != null && connection.request.method === RequestMethod.Put) {
+                let matches = connection.request.url.split('?')[0].match(/repositories\/([^\/]+)\/([^\/]+)/);
+                let userId = matches[1];
+                let repositoryName = matches[2];
+                let bodyObject = JSON.parse(connection.request.getBody());
+                let repositoryToFind = REPOSITORIES.find(repo => {
+                    return repo.name == repositoryName;
+                });
+
+                let indexToFind = REPOSITORIES.indexOf(repositoryToFind);
+                if(repositoryToFind == undefined){
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        status: 400
+                    })));
+                }else{
+                    if(bodyObject.hasOwnProperty('activated'))
+                        REPOSITORIES[indexToFind] = new Repository(repositoryToFind['name'], repositoryToFind['accessLink'], bodyObject['activated'], repositoryToFind['cves']);
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        status: 200
+                    })));
+                }
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+            
             if (connection.request.url.split('?')[0].endsWith('/login') && connection.request.method === RequestMethod.Post) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
@@ -67,9 +93,9 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 .subscribe((response: Response) => {
                     connection.mockRespond(response);
                 },
-                (error: any) => {
-                    connection.mockError(error);
-                });
+                           (error: any) => {
+                               connection.mockError(error);
+                           });
 
         }, 500);
 

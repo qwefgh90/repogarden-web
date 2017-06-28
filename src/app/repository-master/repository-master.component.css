@@ -1,0 +1,44 @@
+.left-outer-box{
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+}
+
+.left-inner-box{
+
+}
+
+/* boxes except bottom boxes */
+.left-inner-box:not(:last-child) {
+    border-bottom: 1px solid #e1e1e8;
+}
+
+/* boxes except top, bottom boxes */
+.left-inner-box:not(:last-child):not(:first-child) {
+    padding-top: 4px;
+}
+
+/* top box */
+.left-inner-box:first-child {
+    padding-top: 4px;
+}
+
+/* bottom box */
+.left-inner-box:last-child {
+    padding-top: 4px;
+}
+/*
+.left-content-box:hover{
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+*/
+.left-content-box-selected{
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.right-box-collapsed{
+    margin-left: 10px;
+}

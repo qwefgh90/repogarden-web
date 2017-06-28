@@ -6,6 +6,9 @@
     border-radius: 4px;
     padding: 9px 14px;
 }
+span.clickable:hover {
+    cursor: pointer;
+}
 .reponame {
     padding-bottom: 3px;
     border-bottom: 1px solid #ddd;

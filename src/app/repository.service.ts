@@ -17,10 +17,8 @@ export class RepositoryService {
             .toPromise()
     }
 
-    private handleError(error: any) {
-        console.error('An error occurred', error);
-
+    updateActivated(userName: string, repositoryName: string, activated: boolean): Promise<boolean> {
+        let requestUrl = `api/repositories/${userName}/${repositoryName}`;
+        return this.http.put(requestUrl, {activated: activated}).map(response => response.ok).toPromise();
     }
-
-
 }

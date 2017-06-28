@@ -2,26 +2,25 @@
   <div class="row">
     <div class="col-sm-4">
       <p>{{userInfo.username}}</p>
-      <p>{{activeCount}}/{{repositories.length}}</p>
+      <p>{{activeCount}}/{{repositories?.length}}</p>
     </div>
     <div class="col-sm-8">
       <h2>Repositories</h2>
       <div class="container-fluid">
-        <div class="row child-empty-pad">
+        <div class="row child-empty-pad" style="border-bottom: 2px solid #eeeeee; margin-bottom: 14px">
           <div style="display:inline-block">
             <span>switch repositories in following list</span>
           </div>
           <div style="text-align:right;float:right;display:inline-block">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Custom
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Custom
           </div>
         </div>
-        <hr/>
-        <div class="row" *ngFor="let repository of repositories">
-          <div class="btn-group">
-            <label class="btn btn-success" [(ngModel)]="repository.activated" btnRadio="on" (click)="radioClick();">On</label>
-            <label class="btn btn-success" [(ngModel)]="repository.activated" btnRadio="off" (click)="radioClick();">Off</label>
+        <div class="row repository-item" *ngFor="let repository of repositories">
+          <a class="h4" target="_blank" href="{{repository.accessLink}}">{{userInfo.id}}/{{repository.name}}</a>
+          <div class="btn-group" style="float:right">
+            <label class="btn btn-sm btn-primary" [(ngModel)]="repository.activated" btnRadio="on" [debounce]="500" (onDebounce)="radioClick(repository)">On</label>
+            <label class="btn btn-sm btn-primary" [(ngModel)]="repository.activated" btnRadio="off" >Off</label>
           </div>
-          <a target="_blank" href="{{repository.accessLink}}">{{userInfo.id}}/{{repository.name}}</a>
         </div>
       </div>
     </div>
