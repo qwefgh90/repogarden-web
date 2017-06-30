@@ -32,6 +32,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { DebounceDirective } from './debounce.directive';
 import { RepositoryTypoDetailComponent } from './repository-typo-detail/repository-typo-detail.component';
 
+//ng2-tree
+import { TreeModule } from 'ng2-tree';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -76,7 +79,8 @@ import { RepositoryTypoDetailComponent } from './repository-typo-detail/reposito
         ButtonsModule.forRoot(),
         TooltipModule.forRoot(),
         CollapseModule.forRoot(),
-        TabsModule.forRoot()
+        TabsModule.forRoot(),
+        TreeModule
     ],
     providers: [
         AuthGuardService,

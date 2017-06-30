@@ -10,7 +10,7 @@ import { RepositoryCveDetailComponent } from '../repository-cve-detail/repositor
 import { RepositoryTypoDetailComponent } from '../repository-typo-detail/repository-typo-detail.component';
 
 enum Tab {
-    Cve=1,
+    Cve = 1,
     Typo
 };
 
@@ -38,7 +38,7 @@ export class RepositoryMasterComponent implements OnInit {
                 });
             });
         this.route.queryParams.map(params => {
-            return params['tab'] || '0';
+            return params['tab'] || Tab.Cve;
         }).subscribe(tab => {
             this.activeTab = tab;
         });;
@@ -58,17 +58,17 @@ export class RepositoryMasterComponent implements OnInit {
     ngOnInit() {
     }
 
-    collapseToggle(){
+    collapseToggle() {
         this.isCollapsed = !this.isCollapsed;
     }
 
-    selectRepository(repo: Repository){
+    selectRepository(repo: Repository) {
         this.router.navigate([this.selectedId, repo.name]);
     }
 
-    selectTab(tabName: Tab){
+    selectTab(tabName: Tab) {
         let tabNumber = Tab[tabName];
-        this.router.navigate([this.selectedId, this.selectedRepositoryName], {queryParams : { tab : tabNumber }});
+        this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tabNumber } });
     }
 }
 
