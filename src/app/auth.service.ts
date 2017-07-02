@@ -11,6 +11,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class AuthService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
+
     constructor(private http: Http, private router: Router, private activatedRoute: ActivatedRoute, private profileService: ProfileService) {
         let currentUser = localStorage.getItem('currentUser');
         let user = JSON.parse(currentUser);
@@ -22,8 +23,16 @@ export class AuthService {
 
     private sessionCreated: boolean = false;
 
+    requestUserIdentity(): void {
+        this.http.get('/client').toPromise().then(response => {
+            let state = Date.now();
+            let client_id = response.text();
+            let redirect_uri = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/callback`;
+            window.location.href = `https://github.com/login/oauth/authorize?state=${state}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
+        })
+    }
+
     login(code: string, state: string): Observable<void> {
-        console.info('code:' + code + ',state:' + state);
         var observable = this.http.post('/login', '');
         return observable.map(response => {
             let user = response.json();

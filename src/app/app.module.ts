@@ -34,6 +34,7 @@ import { RepositoryTypoDetailComponent } from './repository-typo-detail/reposito
 
 //ng2-tree
 import { TreeModule } from 'ng2-tree';
+import { CallbackComponent } from './callback/callback.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { TreeModule } from 'ng2-tree';
         RepositoryCveDetailComponent,
         DebounceDirective,
         RepositoryTypoDetailComponent,
+        CallbackComponent,
     ],
     imports: [
         BrowserModule,
@@ -71,6 +73,10 @@ import { TreeModule } from 'ng2-tree';
             {
                 path: 'welcome',
                 component: WelcomeComponent
+            },
+            {
+                path: 'callback',
+                component: CallbackComponent
             },
             // otherwise redirect to home
             { path: '**', redirectTo: '' }

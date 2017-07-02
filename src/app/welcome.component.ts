@@ -9,7 +9,7 @@ import { AuthService } from './auth.service'
 export class WelcomeComponent {
     constructor(private authService: AuthService) { }
 
-    login() {
-        this.authService.login("", "").subscribe();
+    requestUserIdentity() {
+        this.authService.requestUserIdentity();
     }
 }

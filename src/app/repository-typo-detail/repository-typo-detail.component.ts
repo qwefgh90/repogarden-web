@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Repository } from '../class/repository';
 import { Ng2TreeSettings, NodeSelectedEvent } from 'ng2-tree';
-import { GitNode } from '../class/git-node';
+import { GitNode, NodeType } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 
 
@@ -25,31 +25,35 @@ export class RepositoryTypoDetailComponent implements OnInit {
 
     tree: GitNode = {
         value: '/',
+        type: NodeType.TREE,
         children: [
             {
                 value: 'library',
+                type: NodeType.TREE,
                 children: [
-                    { value: 'require.js' },
-                    { value: 'angular.js' },
+                    { value: 'require.js', type: NodeType.BLOB },
+                    { value: 'angular.js', type: NodeType.BLOB },
                     {
-                        value: 'rxjs.js',
+                        value: 'rxjs.js <small>(1)</small>',
                         typoInfo: {
                             offsetTuple: [[0, 5]],
-                            body: 'Hlleo world'
-                        }
+                            body: 'Hlleo world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br>'
+                        }, type: NodeType.BLOB
                     }
                 ]
             },
             {
                 value: 'html',
+                type: NodeType.TREE,
                 children: [
-                    { value: 'main.html <small>(1)</small>' },
-                    { value: 'left.html' },
-                    { value: 'commercial.html' }
+                    { value: 'main.html', type: NodeType.BLOB },
+                    { value: 'left.html', type: NodeType.BLOB },
+                    { value: 'commercial.html', type: NodeType.BLOB }
                 ]
             },
             {
                 value: 'css',
+                type: NodeType.TREE,
                 children: [
                 ],
             }
@@ -78,12 +82,34 @@ export class RepositoryTypoDetailComponent implements OnInit {
         let node = <GitNode>$event.node.node;
         this.typoInfo = node.typoInfo;
         console.info($event);
+        this.formattingText = this.getFormattingText(this.typoInfo);
     }
 
     getFormattingText(typoInfo: TypoInfo): string {
-        let sortedTypoList = typoInfo.offsetTuple.sort((a, b) => { return a[0] > b[0] ? 1 : 0 });
-        let arr: Array<string> = [];
-        //        typoInfo.body.
-        return "";
+        if (typoInfo == undefined || typoInfo == null) {
+            return "";
+        } else {
+            let sortedTypoList = typoInfo.offsetTuple.sort((a, b) => { return a[0] > b[0] ? 1 : 0 });
+            let typoStartOffsetMap = typoInfo.offsetTuple.reduce(function(a, b) {
+                a[b[0]] = true;
+                return a;
+            }, {});
+            let typoEndOffsetMap = typoInfo.offsetTuple.reduce(function(a, b) {
+                a[b[0] + b[1]] = true;
+                return a;
+            }, {});
+            let resultString: Array<string> = [];
+            let body = <String>typoInfo.body;
+            for (let idx in body) {
+                if (typoEndOffsetMap[idx] == true) {
+                    resultString.push('</mark>');
+                }
+                if (typoStartOffsetMap[idx] == true) {
+                    resultString.push('<mark>');
+                }
+                resultString.push(body[idx]);
+            }
+            return resultString.join("");
+        }
     }
 }

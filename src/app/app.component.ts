@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from './auth.service';
 import { UserInfo } from './class/user-info';
 import { ProfileService } from './profile.service';
@@ -27,12 +28,12 @@ export class AppComponent {
         this.isCollapsed = !this.isCollapsed;
     }
 
-    login() {
-        this.authService.login("", "").subscribe();
-    }
-
     logout() {
         this.authService.logout();
+    }
+
+    requestUserIdentity() {
+        this.authService.requestUserIdentity();
     }
 
     isLogin(): boolean {

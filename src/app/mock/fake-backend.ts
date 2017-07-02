@@ -21,6 +21,15 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 return;
             }
 
+            if (connection.request.url.split('?')[0].endsWith('/client') && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: 'fa53e2edfcd2a6a7bcd7'
+                })));
+                return;
+
+            }
+
             if (connection.request.url.split('?')[0].match(/repositories\/([^\/]+)\/([^\/]+)/) != null && connection.request.method === RequestMethod.Put) {
                 let matches = connection.request.url.split('?')[0].match(/repositories\/([^\/]+)\/([^\/]+)/);
                 let userId = matches[1];
@@ -31,12 +40,12 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 });
 
                 let indexToFind = REPOSITORIES.indexOf(repositoryToFind);
-                if(repositoryToFind == undefined){
+                if (repositoryToFind == undefined) {
                     connection.mockRespond(new Response(new ResponseOptions({
                         status: 400
                     })));
-                }else{
-                    if(bodyObject.hasOwnProperty('activated'))
+                } else {
+                    if (bodyObject.hasOwnProperty('activated'))
                         REPOSITORIES[indexToFind] = new Repository(repositoryToFind['name'], repositoryToFind['accessLink'], bodyObject['activated'], repositoryToFind['cves']);
                     connection.mockRespond(new Response(new ResponseOptions({
                         status: 200
@@ -45,7 +54,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 console.info(JSON.stringify(connection.request));
                 return;
             }
-            
+
             if (connection.request.url.split('?')[0].endsWith('/login') && connection.request.method === RequestMethod.Post) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
@@ -93,9 +102,9 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 .subscribe((response: Response) => {
                     connection.mockRespond(response);
                 },
-                           (error: any) => {
-                               connection.mockError(error);
-                           });
+                (error: any) => {
+                    connection.mockError(error);
+                });
 
         }, 500);
 
