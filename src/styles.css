@@ -22,3 +22,8 @@ div.content-box:hover {
     border: 1px solid #eeeeee;
     border-radius: 4px;
 }
+
+/* custom style for ng2-tree */
+div.disabled + div.node-value {
+    color: #666666;
+}
