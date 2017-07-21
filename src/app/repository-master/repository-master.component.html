@@ -9,7 +9,7 @@
     <div style="margin-bottom:3px"><span class="h5">Repositories</span><span class="glyphicon glyphicon-circle-arrow-left clickable" style="float:right" (click)="collapseToggle()"></span></div>
     <div *ngFor="let repo of repositories" class="left-inner-box" (click)="selectRepository(repo)">
       <div class="content-box" [class.left-content-box-selected]="repo == selectedRepository">
-        <div>{{repo.name}}</div>
+        <div>{{repo.name}}</div>        
         <div><a href="{{repo.getRepoUrl(userInfo.id)}}" target="_blank">github</a></div>
       </div>
     </div>
@@ -19,7 +19,18 @@
     <div class="container-fluid" [class.right-box-collapsed]="isCollapsed" >
       <div style="margin-bottom:16px;">
         <span class="h3">{{selectedRepositoryName}}</span>
-        <a href="{{selectedRepository?.getRepoUrl(selectedId)}}" target="_blank" style="float:right"><img src="assets/GitHub-Mark-32px.png"/></a>
+        <div style="float:right">
+          <div class="btn-group" dropdown>
+            <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+              {{selectedBranch}}<span class="caret"></span>
+            </button>
+            <ul *dropdownMenu class="dropdown-menu" role="menu" >
+              <li role="menuitem" *ngFor="let branch of branches"><a class="dropdown-item" href="javascript:void(0)" (click)="selectBranch(branch)">{{branch}}</a></li>
+            </ul>
+          </div>
+          &nbsp;
+          <a href="{{selectedRepository?.getRepoUrl(selectedId)}}" target="_blank"><img src="assets/GitHub-Mark-32px.png"/></a>
+        </div>
       </div>
       <tabset>
         <tab [active]="activeTab == 1" (select)="selectTab('Cve')">
