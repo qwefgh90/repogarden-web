@@ -12,4 +12,3 @@ export interface GitNode extends TreeModel {
     typoInfo?: TypoInfo;
     children?: Array<GitNode>;
 }
-

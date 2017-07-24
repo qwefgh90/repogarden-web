@@ -24,6 +24,7 @@ export class RepositoryMasterComponent implements OnInit {
     private selectedId: string;
     private selectedRepositoryName: string;
 
+    Tab = Tab; // for using Tab structure
     selectedRepository: Repository;
     repositories: Repository[];
     userInfo: UserInfo;
@@ -33,13 +34,13 @@ export class RepositoryMasterComponent implements OnInit {
     branches: Array<String>;
 
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private repositoryService: RepositoryService) {
-        this.route.params
+        /*this.route.params
             .subscribe(params => {
                 this.selectedId = params['id'];
                 this.selectedRepositoryName = params['repository'];
                 repositoryService.getRepositories().then(repos => {
                 });
-            });
+            });*/
         /*
                 this.route.queryParams.map(params => {
                     return params['tab'] || Tab.Cve;
@@ -53,22 +54,32 @@ export class RepositoryMasterComponent implements OnInit {
                     this.selectedBranch = branch;
                 })
         */
-
-        this.route.queryParams.subscribe(params => {
-            let tab = params['tab'] || Tab.Cve;
-            let branch = params['branch'] || "";
-            this.activeTab = tab;
-            this.selectedBranch = branch;
-        });
-
         repositoryService.getRepositories().then(repos => {
+            let params = route.snapshot.params
             this.repositories = repos;
+            this.selectedId = params['id'];
+            this.selectedRepositoryName = params['repository'];
+            this.selectedRepository = repos.find(repo => params['repository'] == repo.name);
+            this.branches = this.selectedRepository.branches;
+            this.selectedBranch = this.selectedRepository.defaultBranch;
+            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch } });
+
             this.route.params.subscribe(params => {
+                this.selectedId = params['id'];
+                this.selectedRepositoryName = params['repository'];
                 this.selectedRepository = repos.find(repo => params['repository'] == repo.name);
                 this.branches = this.selectedRepository.branches;
-                this.selectedBranch = this.branches.length > 0 ? this.branches[0] : "";
-                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: this.activeTab, branch: this.selectedBranch } });
+                this.selectedBranch = this.selectedRepository.defaultBranch;
+                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch } });
             });
+
+            this.route.queryParams.subscribe(params => {
+                let tab = params['tab'] || Tab.Cve;
+                let branch = params['branch'] || "";
+                this.activeTab = tab;
+                this.selectedBranch = branch;
+            });
+
         });
 
         profileService.getObservableUserInfo().subscribe(userInfo => {
@@ -87,14 +98,11 @@ export class RepositoryMasterComponent implements OnInit {
         this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: this.activeTab, branch: name } });
     }
 
-    selectRepository(repo: Repository) {
-        this.router.navigate([this.selectedId, repo.name], { queryParams: { tab: this.activeTab, branch: this.selectedBranch } });
-    }
-
     selectTab(tabName: Tab) {
         console.log("select tab");
         let tabNumber = Tab[tabName];
-        this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tabNumber, branch: this.selectedBranch } });
+        if (this.selectedBranch != undefined)
+            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tabNumber, branch: this.selectedBranch } });
     }
 }
 

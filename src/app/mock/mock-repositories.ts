@@ -8,9 +8,9 @@ const cve2: Cve = new Cve('2017-3161', "Apache Hadoop NameNode XSS vulnerability
 const cve3: Cve = new Cve('2017-3162', "Apache Hadoop DataNode web UI vulnerability", "HDFS clients interact with a servlet on the DataNode to browse the HDFS namespace. The NameNode is provided as a query parameter that is not validated in Apache Hadoop before 2.7.0.", ["https://bugzilla.redhat.com/show_bug.cgi?id=1448373", "http://openwall.com/lists/oss-security/2017/04/26/1", "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-3162", "http://seclists.org/oss-sec/2017/q2/126"]);
 
 export const REPOSITORIES: Repository[] = [
-    new Repository('opencv', 'http://www.naver.com', "on", ["develop", "feature-2"], [cve1]),
-    new Repository('repos', 'http://www.naver.com', "off", ["master", "feature-1"], [cve2, cve3]),
-    new Repository('algorithm', 'http://www.naver.com', "on", ["master", "develop"], [])
+    new Repository('opencv', 'http://www.naver.com', "on", "develop", ["develop", "feature-2"], [cve1]),
+    new Repository('repos', 'http://www.naver.com', "off", "master", ["master", "feature-1"], [cve2, cve3]),
+    new Repository('algorithm', 'http://www.naver.com', "on", "master", ["master", "develop"], [])
 ];
 
 //https://github.com/victims/victims-cve-db/blob/master/database/java/2017/3161.yaml

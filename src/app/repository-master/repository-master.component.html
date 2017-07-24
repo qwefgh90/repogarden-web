@@ -7,11 +7,11 @@
   <div class="col-md-2 left-outer-box" [class.col-md-2]="!isCollapsed" [collapse]="isCollapsed">
 
     <div style="margin-bottom:3px"><span class="h5">Repositories</span><span class="glyphicon glyphicon-circle-arrow-left clickable" style="float:right" (click)="collapseToggle()"></span></div>
-    <div *ngFor="let repo of repositories" class="left-inner-box" (click)="selectRepository(repo)">
-      <div class="content-box" [class.left-content-box-selected]="repo == selectedRepository">
+    <div *ngFor="let repo of repositories" class="left-inner-box">
+      <a routerLink="/{{selectedId}}/{{repo.name}}" [queryParams]="{tab: activeTab, branch: selectedBranch}" class="content-box" style="display:block" [class.left-content-box-selected]="repo == selectedRepository" >
         <div>{{repo.name}}</div>        
         <div><a href="{{repo.getRepoUrl(userInfo.id)}}" target="_blank">github</a></div>
-      </div>
+      </a>
     </div>
 
   </div>
@@ -25,7 +25,7 @@
               {{selectedBranch}}<span class="caret"></span>
             </button>
             <ul *dropdownMenu class="dropdown-menu" role="menu" >
-              <li role="menuitem" *ngFor="let branch of branches"><a class="dropdown-item" href="javascript:void(0)" (click)="selectBranch(branch)">{{branch}}</a></li>
+              <li role="menuitem" *ngFor="let branch of branches"><a class="dropdown-item" routerLink="/{{selectedId}}/{{selectedRepositoryName}}" [queryParams]="{tab: activeTab, branch: branch}">{{branch}}</a></li>
             </ul>
           </div>
           &nbsp;
@@ -33,15 +33,15 @@
         </div>
       </div>
       <tabset>
-        <tab [active]="activeTab == 1" (select)="selectTab('Cve')">
+        <tab [active]="activeTab == 1">
           <template tabHeading>
-            CVEs <small>({{selectedRepository?.cves.length}})</small>
+            <a routerLink="/{{selectedId}}/{{selectedRepositoryName}}" [queryParams]="{tab: Tab.Cve, branch: selectedBranch}">CVEs <small>({{selectedRepository?.cves.length}})</small></a>
           </template>
           <app-repository-cve-detail [repository]="selectedRepository"></app-repository-cve-detail>
         </tab>
-        <tab [active]="activeTab == 2" (select)="selectTab('Typo')">
+        <tab [active]="activeTab == 2">
           <template tabHeading>
-            Typos <small>(0)</small>
+            <a routerLink="/{{selectedId}}/{{selectedRepositoryName}}" [queryParams]="{tab: Tab.Typo, branch: selectedBranch}">Typos <small>(0)</small></a>
           </template>
           <app-repository-typo-detail [repository]="selectedRepository"></app-repository-typo-detail>
         </tab>

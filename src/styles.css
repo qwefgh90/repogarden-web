@@ -5,9 +5,14 @@ span.clickable:hover {
     cursor: pointer;
 }
 
-div.content-box:hover {
+a.content-box:hover {
     background-color: #eeeeee;
     cursor: pointer;
+    text-decoration: none;
+}
+
+a.content-box {
+    text-decoration: none;
 }
 
 .equal {
