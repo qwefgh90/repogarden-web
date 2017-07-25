@@ -6,6 +6,7 @@ import { RepositoryService } from '../repository.service';
 import { ProfileService } from '../profile.service';
 import { Repository } from '../class/repository';
 import { UserInfo } from '../class/user-info';
+import { Branch } from '../class/branch';
 import { RepositoryCveDetailComponent } from '../repository-cve-detail/repository-cve-detail.component';
 import { RepositoryTypoDetailComponent } from '../repository-typo-detail/repository-typo-detail.component';
 import { Observable } from 'rxjs/Observable';
@@ -30,8 +31,8 @@ export class RepositoryMasterComponent implements OnInit {
     userInfo: UserInfo;
     isCollapsed = false;
     activeTab = Tab.Cve; // it can have a number from one
-    selectedBranch: String;
-    branches: Array<String>;
+    selectedBranch: Branch;
+    branches: Array<Branch>;
 
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private repositoryService: RepositoryService) {
         /*this.route.params
@@ -61,23 +62,23 @@ export class RepositoryMasterComponent implements OnInit {
             this.selectedRepositoryName = params['repository'];
             this.selectedRepository = repos.find(repo => params['repository'] == repo.name);
             this.branches = this.selectedRepository.branches;
-            this.selectedBranch = this.selectedRepository.defaultBranch;
-            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch } });
+            this.selectedBranch = this.selectedRepository.getDefaultBranch();
+            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch.name } });
 
             this.route.params.subscribe(params => {
                 this.selectedId = params['id'];
                 this.selectedRepositoryName = params['repository'];
                 this.selectedRepository = repos.find(repo => params['repository'] == repo.name);
                 this.branches = this.selectedRepository.branches;
-                this.selectedBranch = this.selectedRepository.defaultBranch;
-                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch } });
+                this.selectedBranch = this.selectedRepository.getDefaultBranch();
+                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch.name } });
             });
 
             this.route.queryParams.subscribe(params => {
                 let tab = params['tab'] || Tab.Cve;
-                let branch = params['branch'] || "";
+                let branchName = params['branch'] || "";
                 this.activeTab = tab;
-                this.selectedBranch = branch;
+                this.selectedBranch = this.selectedRepository.branches.find((branch: Branch) => branchName == branch.name);
             });
 
         });
@@ -102,7 +103,7 @@ export class RepositoryMasterComponent implements OnInit {
         console.log("select tab");
         let tabNumber = Tab[tabName];
         if (this.selectedBranch != undefined)
-            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tabNumber, branch: this.selectedBranch } });
+            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tabNumber, branch: this.selectedBranch.name } });
     }
 }
 
