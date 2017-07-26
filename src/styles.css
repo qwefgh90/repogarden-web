@@ -32,3 +32,9 @@ a.content-box {
 div.disabled + div.node-value {
     color: #666666;
 }
+
+/* custom style for ng2-accordion #5bc0de;*/
+.panel.customClass .panel-heading {
+  background-color: #555555;
+  color: #fff;
+}

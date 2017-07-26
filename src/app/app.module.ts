@@ -23,6 +23,7 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 
 //bootstrap
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { RepositoryMasterComponent } from './repository-master/repository-master.component';
@@ -86,6 +87,7 @@ import { CallbackComponent } from './callback/callback.component';
         TooltipModule.forRoot(),
         CollapseModule.forRoot(),
         TabsModule.forRoot(),
+        AccordionModule.forRoot(),
         TreeModule
     ],
     providers: [

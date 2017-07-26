@@ -13,9 +13,9 @@ import { tree as mockTree } from '../mock/mock-git-tree'
 })
 export class RepositoryTypoDetailComponent implements OnInit {
 
-    @Input('repository') selectedRepository: Repository;
+    @Input('selectedRepository') selectedRepository: Repository;
     @Input('selectedId') userId: string;
-    @Input('selectedRepositoryName') repoName: string;
+    @Input('selectedBranch') branch: string;
 
     dummy: string = 'Template <script>alert("0wned")</script> <b>Syntax</b> and <mark>marked text</mark><br>next line';
 

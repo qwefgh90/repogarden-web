@@ -1,4 +1,6 @@
 import { GitNode, NodeType } from '../class/git-node';
+import { cve1, cve2, cve3 } from './mock-cve';
+
 
 export const tree: GitNode = {
     value: '/',
@@ -8,14 +10,14 @@ export const tree: GitNode = {
             value: 'library',
             type: NodeType.TREE,
             children: [
-                { value: 'require.js', type: NodeType.BLOB },
-                { value: 'angular.js', type: NodeType.BLOB },
+                { value: 'require.js', type: NodeType.BLOB, children: [] },
+                { value: 'angular.js', type: NodeType.BLOB, children: [] },
                 {
                     value: 'rxjs.js <small>(1)</small>',
                     typoInfo: {
                         offsetTuple: [[0, 5]],
                         body: 'Hlleo world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br>'
-                    }, type: NodeType.BLOB
+                    }, type: NodeType.BLOB, children: []
                 }
             ]
         },
@@ -23,9 +25,9 @@ export const tree: GitNode = {
             value: 'html',
             type: NodeType.TREE,
             children: [
-                { value: 'main.html', type: NodeType.BLOB },
-                { value: 'left.html', type: NodeType.BLOB },
-                { value: 'commercial.html', type: NodeType.BLOB }
+                { value: 'main.html', type: NodeType.BLOB, children: [] },
+                { value: 'left.html', type: NodeType.BLOB, children: [] },
+                { value: 'commercial.html', type: NodeType.BLOB, children: [] }
             ]
         },
         {
@@ -58,7 +60,7 @@ export const tree2: GitNode = {
     children: [
         {
             value: 'pom.xml',
-            type: NodeType.BLOB
+            type: NodeType.BLOB, children: []
         },
         {
 
@@ -70,7 +72,8 @@ export const tree2: GitNode = {
                     typoInfo: {
                         offsetTuple: [[0, 5]],
                         body: 'Hlleo world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br>'
-                    }, type: NodeType.BLOB
+                    }, type: NodeType.BLOB, children: []
+                    , cves: [cve1, cve2]
                 }
             ]
         },
@@ -78,9 +81,9 @@ export const tree2: GitNode = {
             value: 'html',
             type: NodeType.TREE,
             children: [
-                { value: 'main.html', type: NodeType.BLOB },
-                { value: 'left.html', type: NodeType.BLOB },
-                { value: 'commercial.html', type: NodeType.BLOB }
+                { value: 'main.html', type: NodeType.BLOB, children: [] },
+                { value: 'left.html', type: NodeType.BLOB, children: [] },
+                { value: 'commercial.html', type: NodeType.BLOB, children: [] }
             ]
         }
     ],
