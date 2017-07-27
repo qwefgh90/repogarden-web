@@ -5,16 +5,16 @@ import { Branch } from '../class/branch';
 import { cve1, cve2, cve3 } from './mock-cve';
 import { tree, tree2 } from './mock-git-tree';
 
-const commit1: Commit = new Commit("aasdvf23cv", "first commit", "20170505", "qwefgh90", "leadersama", "url", tree2);
+const commit1: Commit = new Commit("aasdvf23cv", "first commit", "20170505", "qwefgh90", "leadersama", "url");
 
-const commit2: Commit = new Commit("7ukm7j6km", "second commit", "20170505", "qwefgh90", "leadersama", "url", tree2);
+const commit2: Commit = new Commit("7ukm7j6km", "second commit", "20170505", "qwefgh90", "leadersama", "url");
 
-const commit3: Commit = new Commit("tl24k5t24", "third commit", "20170505", "qwefgh90", "leadersama", "url", tree2);
+const commit3: Commit = new Commit("tl24k5t24", "third commit", "20170505", "qwefgh90", "leadersama", "url");
 
 export const REPOSITORIES: Repository[] = [
-    new Repository('opencv', 'http://www.naver.com', "on", [new Branch("develop", [commit1]), new Branch("feature-2", [])], []),
-    new Repository('repos', 'http://www.naver.com', "off", [new Branch("master", []), new Branch("feature-1", [])], []),
-    new Repository('algorithm', 'http://www.naver.com', "on", [new Branch("master", [commit2, commit3]), new Branch("develop", [])], [])
+    new Repository('qwefgh90', 'opencv', 'http://www.naver.com', "on", [new Branch("develop", [commit1]), new Branch("feature-2", [])], []),
+    new Repository('qwefgh90', 'repos', 'http://www.naver.com', "off", [new Branch("master", []), new Branch("feature-1", [])], []),
+    new Repository('qwefgh90', 'algorithm', 'http://www.naver.com', "on", [new Branch("master", [commit2, commit3]), new Branch("develop", [])], [])
 ];
 
 //https://github.com/victims/victims-cve-db/blob/master/database/java/2017/3161.yaml

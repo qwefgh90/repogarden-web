@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { ProfileService } from './profile.service';
 import { AuthGuardService } from './auth-guard.service';
 import { RepositoryService } from './repository.service';
 import { AuthService } from './auth.service';
+import { TreeService } from './tree.service';
 import { LogoutComponent } from './logout/logout.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
@@ -95,6 +97,7 @@ import { CallbackComponent } from './callback/callback.component';
         AuthService,
         RepositoryService,
         ProfileService,
+        TreeService,
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,

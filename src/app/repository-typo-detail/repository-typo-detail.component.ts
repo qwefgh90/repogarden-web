@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Repository } from '../class/repository';
+import { Branch } from '../class/branch';
+import { Commit } from '../class/commit';
 import { Ng2TreeSettings, NodeSelectedEvent } from 'ng2-tree';
-import { GitNode, NodeType } from '../class/git-node';
+import { GitNode, TypoCounter, dfs } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 import { tree as mockTree } from '../mock/mock-git-tree'
-
 
 @Component({
     selector: 'app-repository-typo-detail',
@@ -13,13 +14,14 @@ import { tree as mockTree } from '../mock/mock-git-tree'
 })
 export class RepositoryTypoDetailComponent implements OnInit {
 
-    @Input('selectedRepository') selectedRepository: Repository;
+    @Input('selectedRepository') repository: Repository;
     @Input('selectedId') userId: string;
     @Input('selectedBranch') branch: string;
+    selectedNodeMap: Map<string, GitNode> = new Map<string, GitNode>();
 
+    public customClass: string = 'customClass';
     dummy: string = 'Template <script>alert("0wned")</script> <b>Syntax</b> and <mark>marked text</mark><br>next line';
 
-    typoInfo: TypoInfo;
     formattingText: string;
 
     treeSettings: Ng2TreeSettings = {
@@ -32,11 +34,16 @@ export class RepositoryTypoDetailComponent implements OnInit {
     ngOnInit() {
     }
 
-    select($event: NodeSelectedEvent) {
+    select(commit: Commit, $event: NodeSelectedEvent) {
         let node = <GitNode>$event.node.node;
-        this.typoInfo = node.typoInfo;
         console.info($event);
-        this.formattingText = this.getFormattingText(this.typoInfo);
+        this.selectedNodeMap[commit.sha] = node;
+        this.formattingText = this.getFormattingText(node.typoInfo);
+    }
+
+    getTypoCount(commit: Commit): number {
+        //        return dfs(commit.tree, new TypoCounter());
+        return 0;
     }
 
     getFormattingText(typoInfo: TypoInfo): string {

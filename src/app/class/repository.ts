@@ -2,7 +2,7 @@ import { Cve } from './cve';
 import { Branch } from './branch'
 
 export class Repository {
-    constructor(readonly name, readonly accessLink, readonly activated, readonly branches: Array<Branch>, readonly cves: Array<Cve>) {
+    constructor(readonly owner, readonly name, readonly accessLink, readonly activated, readonly branches: Array<Branch>, readonly cves: Array<Cve>) {
     }
     public getRepoUrl(id: string): string {
         return `https://github.com/${id}/${this.name}`;

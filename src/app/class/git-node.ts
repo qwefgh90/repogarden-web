@@ -30,7 +30,7 @@ export function dfs<T>(tree: GitNode, visitor: Visitor<T>): T {
     return visitor.acc;
 }
 
-export class Counter extends Visitor<number>{
+export class CveCounter extends Visitor<number>{
     constructor() {
         super();
     }
@@ -38,6 +38,17 @@ export class Counter extends Visitor<number>{
     visit(node: GitNode) {
         if (node.cves != undefined) {
             this.acc = this.acc + node.cves.length;
+        }
+    }
+}
+export class TypoCounter extends Visitor<number>{
+    constructor() {
+        super();
+    }
+    acc: number = 0;
+    visit(node: GitNode) {
+        if (node.typoInfo != undefined) {
+            this.acc = this.acc + 1;
         }
     }
 }

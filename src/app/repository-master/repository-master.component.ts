@@ -30,53 +30,30 @@ export class RepositoryMasterComponent implements OnInit {
     repositories: Repository[];
     userInfo: UserInfo;
     isCollapsed = false;
-    activeTab = Tab.Cve; // it can have a number from one
+    activeTab: Tab = Tab.Cve;
     selectedBranch: Branch;
     branches: Array<Branch>;
 
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private repositoryService: RepositoryService) {
-        /*this.route.params
-            .subscribe(params => {
-                this.selectedId = params['id'];
-                this.selectedRepositoryName = params['repository'];
-                repositoryService.getRepositories().then(repos => {
-                });
-            });*/
-        /*
-                this.route.queryParams.map(params => {
-                    return params['tab'] || Tab.Cve;
-                }).subscribe(tab => {
-                    this.activeTab = tab;
-                })
-        
-                this.route.queryParams.map(params => {
-                    return params['branch'] || "";
-                }).subscribe(branch => {
-                    this.selectedBranch = branch;
-                })
-        */
         repositoryService.getRepositories().then(repos => {
-            let params = route.snapshot.params
             this.repositories = repos;
-            this.selectedId = params['id'];
-            this.selectedRepositoryName = params['repository'];
-            this.selectedRepository = repos.find(repo => params['repository'] == repo.name);
-            this.branches = this.selectedRepository.branches;
-            this.selectedBranch = this.selectedRepository.getDefaultBranch();
-            this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch.name } });
-
             this.route.params.subscribe(params => {
                 this.selectedId = params['id'];
                 this.selectedRepositoryName = params['repository'];
-                this.selectedRepository = repos.find(repo => params['repository'] == repo.name);
+                this.selectedRepository = this.repositories.find(repo => params['repository'] == repo.name);
                 this.branches = this.selectedRepository.branches;
                 this.selectedBranch = this.selectedRepository.getDefaultBranch();
-                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: Tab.Cve, branch: this.selectedBranch.name } });
+
+                let qparams = route.snapshot.queryParams
+                let tab = qparams['tab'] || Tab.Cve;
+                let branchName = qparams['branch'] || this.selectedRepository.getDefaultBranch().name;
+
+                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tab, branch: branchName } });
             });
 
             this.route.queryParams.subscribe(params => {
                 let tab = params['tab'] || Tab.Cve;
-                let branchName = params['branch'] || "";
+                let branchName = params['branch'] || this.selectedRepository.getDefaultBranch().name;
                 this.activeTab = tab;
                 this.selectedBranch = this.selectedRepository.branches.find((branch: Branch) => branchName == branch.name);
             });

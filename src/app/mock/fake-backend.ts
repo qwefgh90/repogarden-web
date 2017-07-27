@@ -2,6 +2,7 @@ import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHR
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { REPOSITORIES } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
+import { tree2 } from '../mock/mock-git-tree';
 import { Repository } from '../class/repository';
 
 export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
@@ -20,6 +21,29 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 console.info(JSON.stringify(connection.request));
                 return;
             }
+
+            if (connection.request.url.split('?')[0].endsWith('/tree') && connection.request.method === RequestMethod.Get) {
+                let paramsBlock = connection.request.url.split("?")[1];
+                let paramsMap = paramsBlock.split('&').reduce((p, c) => {
+                    let components = c.split('=');
+                    p[components[0]] = components[1]
+                    return p;
+                }, new Map<string, string>());
+
+                if (paramsMap['repoName'] == 'opencv' && paramsMap['owner'] == 'qwefgh90') {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        status: 200,
+                        body: tree2
+                    })));
+                } else {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        status: 200
+                    })));
+                }
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
 
             if (connection.request.url.split('?')[0].endsWith('/client') && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
@@ -46,7 +70,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                     })));
                 } else {
                     if (bodyObject.hasOwnProperty('activated'))
-                        REPOSITORIES[indexToFind] = new Repository(repositoryToFind['name'], repositoryToFind['accessLink'], bodyObject['activated'], repositoryToFind['branches'], repositoryToFind['cves']);
+                        REPOSITORIES[indexToFind] = new Repository(repositoryToFind['owner'], repositoryToFind['name'], repositoryToFind['accessLink'], bodyObject['activated'], repositoryToFind['branches'], repositoryToFind['cves']);
                     connection.mockRespond(new Response(new ResponseOptions({
                         status: 200
                     })));

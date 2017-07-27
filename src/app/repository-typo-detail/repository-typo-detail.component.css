@@ -8,3 +8,17 @@
     border: 1px solid #eeeeee;
     border-radius: 4px;
 }
+
+@media(max-width: 969px) {
+    .left-content-box {
+        border-right: none;
+        border-bottom: 1px solid #cccccc;
+        padding-bottom: 6px;
+        margin-bottom: 6px;
+    }
+}
+
+.commit-box:nth-child(n+2) {
+    border-top: 1px solid #cccccc;
+    padding-top: 8px;
+}
