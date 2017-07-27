@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Repository } from '../class/repository';
 import { Branch } from '../class/branch';
 import { Commit } from '../class/commit';
@@ -6,17 +6,18 @@ import { Ng2TreeSettings, NodeSelectedEvent } from 'ng2-tree';
 import { GitNode, TypoCounter, dfs } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 import { tree as mockTree } from '../mock/mock-git-tree'
+import { TreeService } from '../tree.service';
 
 @Component({
     selector: 'app-repository-typo-detail',
     templateUrl: './repository-typo-detail.component.html',
     styleUrls: ['./repository-typo-detail.component.css']
 })
-export class RepositoryTypoDetailComponent implements OnInit {
+export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     @Input('selectedRepository') repository: Repository;
     @Input('selectedId') userId: string;
-    @Input('selectedBranch') branch: string;
+    @Input('selectedBranch') branch: Branch;
     selectedNodeMap: Map<string, GitNode> = new Map<string, GitNode>();
 
     public customClass: string = 'customClass';
@@ -29,9 +30,17 @@ export class RepositoryTypoDetailComponent implements OnInit {
     }
     tree = mockTree
 
-    constructor() { }
+    constructor(public treeService: TreeService) { }
 
     ngOnInit() {
+    }
+
+    ngOnChanges() {
+        if (this.branch != undefined) {
+            let commit = this.branch.commits[0]
+            if (commit != undefined)
+                commit.getTree(this.treeService, this.repository.owner, this.repository.name);
+        }
     }
 
     select(commit: Commit, $event: NodeSelectedEvent) {
@@ -41,9 +50,15 @@ export class RepositoryTypoDetailComponent implements OnInit {
         this.formattingText = this.getFormattingText(node.typoInfo);
     }
 
+    loadTree(commit: Commit) {
+        commit.getTree(this.treeService, this.repository.owner, this.repository.name)
+    }
+
     getTypoCount(commit: Commit): number {
-        //        return dfs(commit.tree, new TypoCounter());
-        return 0;
+        if (commit.tree != undefined)
+            return dfs(commit.tree, new TypoCounter());
+        else
+            return undefined;
     }
 
     getFormattingText(typoInfo: TypoInfo): string {

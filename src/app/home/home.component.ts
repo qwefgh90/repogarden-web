@@ -44,17 +44,17 @@ export class HomeComponent implements OnInit {
     }
 
     public getLastestCveCount(repo: Repository) {
-        if (repo.getDefaultBranch().commits.length == 0)
+//        if (repo.getDefaultBranch().commits.length == 0)
             return 0;
-        else
-            return dfs(repo.getDefaultBranch().commits[0].tree, new CveCounter())
+//        else
+//            return dfs(repo.getDefaultBranch().commits[0].tree, new CveCounter())
     }
 
     public getLastestTypoCount(repo: Repository) {
-        if (repo.getDefaultBranch().commits.length == 0)
+//        if (repo.getDefaultBranch().commits.length == 0)
             return 0;
-        else
-            return dfs(repo.getDefaultBranch().commits[0].tree, new TypoCounter())
+//        else
+//            return dfs(repo.getDefaultBranch().commits[0].tree, new TypoCounter())
     }
 
     ngOnInit() {

@@ -55,6 +55,7 @@ export class RepositoryMasterComponent implements OnInit {
                 let tab = params['tab'] || Tab.Cve;
                 let branchName = params['branch'] || this.selectedRepository.getDefaultBranch().name;
                 this.activeTab = tab;
+                console.log('query:' + JSON.stringify(params));
                 this.selectedBranch = this.selectedRepository.branches.find((branch: Branch) => branchName == branch.name);
             });
 

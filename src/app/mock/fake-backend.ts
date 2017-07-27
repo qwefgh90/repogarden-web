@@ -30,7 +30,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                     return p;
                 }, new Map<string, string>());
 
-                if (paramsMap['repoName'] == 'opencv' && paramsMap['owner'] == 'qwefgh90') {
+                if (paramsMap['owner'] == 'qwefgh90') {
                     connection.mockRespond(new Response(new ResponseOptions({
                         status: 200,
                         body: tree2

@@ -8,7 +8,7 @@
 
     <div style="margin-bottom:3px"><span class="h5">Repositories</span><span class="glyphicon glyphicon-circle-arrow-left clickable" style="float:right" (click)="collapseToggle()"></span></div>
     <div *ngFor="let repo of repositories" class="left-inner-box">
-      <a routerLink="/{{selectedId}}/{{repo.name}}" [queryParams]="{tab: activeTab, branch: selectedBranch?.name}" class="content-box" style="display:block" [class.left-content-box-selected]="repo == selectedRepository" >
+      <a routerLink="/{{selectedId}}/{{repo.name}}" [queryParams]="{tab: activeTab, branch: repo.getDefaultBranch()?.name}" class="content-box" style="display:block" [class.left-content-box-selected]="repo == selectedRepository" >
         <div>{{repo.name}}</div>        
         <div><a href="{{repo.getRepoUrl(userInfo.id)}}" target="_blank">github</a></div>
       </a>

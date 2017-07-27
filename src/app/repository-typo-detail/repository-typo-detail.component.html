@@ -4,16 +4,22 @@
       &nbsp;&nbsp;&nbsp;There are no commits in {{branch.name}} branch.
     </div>
     <accordion>
-      <accordion-group #group *ngFor="let commit of branch?.commits; let i = index" [panelClass]="customClass" [isOpen]="i==0">
+      <accordion-group #group *ngFor="let commit of branch?.commits; let i = index" [panelClass]="customClass" [isOpen]="i==0" (click)="loadTree(commit)">
         <div accordion-heading>
-          <div><span style="float:left">commits: {{commit.message}} ({{commit.sha}}, A number of typo is {{getTypoCount(commit)}})</span>&nbsp;<span style="float:right">{{commit.committerName}}&nbsp;&nbsp;<i class="pull-right float-xs-right glyphicon"
+          <div><span style="float:left">commits: {{commit.message}} ({{commit.sha}}<span *ngIf="getTypoCount(commit)">, A number of typo is {{getTypoCount(commit)}}</span></span>)&nbsp;<span style="float:right">{{commit.committerName}}&nbsp;&nbsp;<i class="pull-right float-xs-right glyphicon"
                                                                                                                                                       [ngClass]="{'glyphicon-chevron-down': group?.isOpen, 'glyphicon-chevron-right': !group?.isOpen}"></i></span></div>
         </div>
-        <div class="row equal">
+
+        <div *ngIf="!commit.tree" style="text-align: center">
+          <i class="fa fa-spinner fa-spin fa-5x fa-fw"></i><br>
+          <i class="fa-2x fa-fw">Trees...</i>
+        </div>
+        <div class="row equal" *ngIf="commit.tree">
           <div class="col-md-6 col-sm-12 left-content-box">
             <tree [tree]="commit?.tree" [settings]="treeSettings" (nodeSelected)="select(commit, $event)"></tree>
           </div>
           <div class="col-md-6 col-sm-12">
+            <div *ngIf="selectedNodeMap[commit.sha]?.typoInfo" style="margin-bottom:5px; border-bottom:1px solid #aaaaaa">{{selectedNodeMap[commit.sha]?.value}}</div>
             <div style="float:right"><a *ngIf="selectedNodeMap[commit.sha]?.githubLink" href="{{selectedNodeMap[commit.sha]?.githubLink}}" target="_blank" class="glyphicon glyphicon-link"></a></div>
             <div [innerHtml]="getFormattingText(selectedNodeMap[commit.sha]?.typoInfo)">
             </div>
