@@ -22,9 +22,12 @@
                 "../node_modules/bootstrap/dist/css/bootstrap.min.css",
                 "../node_modules/ng2-tree/styles.css",
                 "../node_modules/font-awesome/css/font-awesome.min.css",
-                "styles.css"
+                "styles.css",
+                "../node_modules/alertifyjs/build/css/alertify.css",
+                "../node_modules/alertifyjs/build/css/themes/default.css"
             ],
-            "scripts": [],
+            "scripts": [
+                "../node_modules/alertifyjs/build/alertify.js"],
             "environmentSource": "environments/environment.ts",
             "environments": {
                 "dev": "environments/environment.ts",

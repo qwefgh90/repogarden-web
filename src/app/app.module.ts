@@ -39,6 +39,8 @@ import { RepositoryTypoDetailComponent } from './repository-typo-detail/reposito
 import { TreeModule } from 'ng2-tree';
 import { CallbackComponent } from './callback/callback.component';
 
+declare const alertify: any;
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -101,7 +103,9 @@ import { CallbackComponent } from './callback/callback.component';
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions],
+        BaseRequestOptions
+
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

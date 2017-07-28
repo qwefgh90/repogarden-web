@@ -5,6 +5,18 @@ import { cve1, cve2, cve3 } from './mock-cve';
 export const tree: GitNode = {
     value: '/',
     type: NodeType.TREE,
+    settings: {
+        cssClasses: {
+            expanded: 'fa fa-caret-down',
+            collapsed: 'fa fa-caret-right',
+            empty: 'fa fa-caret-right disabled',
+            leaf: 'fa'
+        },
+        templates: {
+            node: '<i class="fa fa-folder-o"></i>',
+            leaf: '<i class="fa fa-file-o"></i>'
+        }
+    },
     children: [
         {
             value: 'library',
@@ -36,20 +48,7 @@ export const tree: GitNode = {
             children: [
             ],
         }
-    ],
-    settings: {
-        'static': true,
-        cssClasses: {
-            expanded: 'fa fa-caret-down',
-            collapsed: 'fa fa-caret-right',
-            empty: 'fa fa-caret-right disabled',
-            leaf: 'fa'
-        },
-        templates: {
-            node: '<i class="fa fa-folder-o left-content-box"></i>',
-            leaf: '<i class="fa fa-file-o"></i>'
-        }
-    }
+    ]
 };
 
 

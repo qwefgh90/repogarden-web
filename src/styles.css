@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* style for tree carot */
+tree-internal .tree .folding{
+    cursor: pointer;
+}
 
 span.clickable:hover {
     cursor: pointer;
@@ -38,3 +42,4 @@ div.disabled + div.node-value {
   background-color: #555555;
   color: #fff;
 }
+

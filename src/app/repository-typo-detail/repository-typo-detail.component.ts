@@ -2,11 +2,14 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Repository } from '../class/repository';
 import { Branch } from '../class/branch';
 import { Commit } from '../class/commit';
-import { Ng2TreeSettings, NodeSelectedEvent } from 'ng2-tree';
+import { Ng2TreeSettings, NodeSelectedEvent, TreeModelSettings, NodeEvent } from 'ng2-tree';
 import { GitNode, TypoCounter, dfs } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 import { tree as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
+//import 'alertify'
+
+declare const alertify: any;
 
 @Component({
     selector: 'app-repository-typo-detail',
@@ -23,14 +26,22 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
     public customClass: string = 'customClass';
     dummy: string = 'Template <script>alert("0wned")</script> <b>Syntax</b> and <mark>marked text</mark><br>next line';
 
+    private static logEvent(message: string): void {
+        console.log(message);
+        alertify.message(`${message}`);
+    }
+
     formattingText: string;
 
     treeSettings: Ng2TreeSettings = {
         rootIsVisible: false
     }
-    tree = mockTree
 
-    constructor(public treeService: TreeService) { }
+    cssSettings: TreeModelSettings = {
+
+    }
+
+    constructor(public treeService: TreeService) { }//, private alertify: Alertify) { }
 
     ngOnInit() {
     }
@@ -39,7 +50,7 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         if (this.branch != undefined) {
             let commit = this.branch.commits[0]
             if (commit != undefined)
-                commit.getTree(this.treeService, this.repository.owner, this.repository.name);
+                this.loadTree(commit);
         }
     }
 
@@ -51,7 +62,9 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
     }
 
     loadTree(commit: Commit) {
-        commit.getTree(this.treeService, this.repository.owner, this.repository.name)
+        commit.getTree(this.treeService, this.repository.owner, this.repository.name).then(tree => {
+            RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
+        });
     }
 
     getTypoCount(commit: Commit): number {
