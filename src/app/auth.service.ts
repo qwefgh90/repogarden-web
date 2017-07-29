@@ -7,6 +7,10 @@ import { UserInfo } from './class/user-info';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/toPromise';
 
+interface InitialVector {
+    client_id: string;
+    state: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -24,22 +28,24 @@ export class AuthService {
     private sessionCreated: boolean = false;
 
     requestUserIdentity(): void {
-        this.http.get('/client').toPromise().then(response => {
-            let state = Date.now();
-            let client_id = response.text();
+        this.http.get('/client').map(response => <InitialVector>response.json()).toPromise().then(initialVector => {
+            let state = initialVector.state;
+            let client_id = initialVector.client_id;
             let redirect_uri = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/callback`;
             window.location.href = `https://github.com/login/oauth/authorize?state=${state}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
         })
     }
 
     login(code: string, state: string): Observable<void> {
-        var observable = this.http.post('/login', '');
+        var observable = this.http.post('/login', { code: code, state: state });
         return observable.map(response => {
             let user = response.json();
             if (user && user.token) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.profileService.setUserInfo(new UserInfo(user.id, user.username,
-                    user.firstName, user.lastName, user.expiredDate, user.imgUrl));
+                let userInfo = new UserInfo(user.id, user.username,
+                    user.firstName, user.lastName, user.expiredDate, user.imgUrl);
+                localStorage.setItem('currentUser', JSON.stringify(userInfo));
+                localStorage.setItem('token', user.token);
+                this.profileService.setUserInfo(userInfo);
                 let returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'];
                 if (returnUrl == undefined)
                     this.router.navigate(['/'], {});

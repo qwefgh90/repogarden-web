@@ -24,7 +24,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
             if (connection.request.url.split('?')[0].endsWith('/client') && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
-                    body: 'fa53e2edfcd2a6a7bcd7'
+                    body: { client_id: 'fa53e2edfcd2a6a7bcd7', state: Date.now() }
                 })));
                 return;
 
