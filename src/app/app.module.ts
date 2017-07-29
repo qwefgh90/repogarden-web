@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -17,12 +18,14 @@ import { ProfileService } from './profile.service';
 import { AuthGuardService } from './auth-guard.service';
 import { RepositoryService } from './repository.service';
 import { AuthService } from './auth.service';
+import { TreeService } from './tree.service';
 import { LogoutComponent } from './logout/logout.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 
 //bootstrap
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { RepositoryMasterComponent } from './repository-master/repository-master.component';
@@ -35,6 +38,8 @@ import { RepositoryTypoDetailComponent } from './repository-typo-detail/reposito
 //ng2-tree
 import { TreeModule } from 'ng2-tree';
 import { CallbackComponent } from './callback/callback.component';
+
+declare const alertify: any;
 
 @NgModule({
     declarations: [
@@ -86,6 +91,7 @@ import { CallbackComponent } from './callback/callback.component';
         TooltipModule.forRoot(),
         CollapseModule.forRoot(),
         TabsModule.forRoot(),
+        AccordionModule.forRoot(),
         TreeModule
     ],
     providers: [
@@ -93,10 +99,13 @@ import { CallbackComponent } from './callback/callback.component';
         AuthService,
         RepositoryService,
         ProfileService,
+        TreeService,
         // providers used to create fake backend
         fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions],
+        BaseRequestOptions
+
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

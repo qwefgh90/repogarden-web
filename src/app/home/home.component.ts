@@ -3,7 +3,9 @@ import { RepositoryService } from '../repository.service';
 import { ProfileService } from '../profile.service';
 import { Repository } from '../class/repository';
 import { UserInfo } from '../class/user-info';
+import { CveCounter, TypoCounter, dfs } from '../class/git-node';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+
 
 @Component({
     selector: 'app-home',
@@ -37,11 +39,23 @@ export class HomeComponent implements OnInit {
 
     public closeTooltip(event) {
         this.tooltips.filter(tooltip => event == tooltip[" __tooltipValue"]).forEach(tooltip => {
-            console.log('hide();');
             tooltip.hide();
         });
     }
 
+    public getLastestCveCount(repo: Repository) {
+//        if (repo.getDefaultBranch().commits.length == 0)
+            return 0;
+//        else
+//            return dfs(repo.getDefaultBranch().commits[0].tree, new CveCounter())
+    }
+
+    public getLastestTypoCount(repo: Repository) {
+//        if (repo.getDefaultBranch().commits.length == 0)
+            return 0;
+//        else
+//            return dfs(repo.getDefaultBranch().commits[0].tree, new TypoCounter())
+    }
 
     ngOnInit() {
     }

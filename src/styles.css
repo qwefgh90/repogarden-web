@@ -1,13 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* style for tree carot */
+tree-internal .tree .folding{
+    cursor: pointer;
+}
 
 span.clickable:hover {
     cursor: pointer;
 }
 
-div.content-box:hover {
+a.content-box:hover {
     background-color: #eeeeee;
     cursor: pointer;
+    text-decoration: none;
+}
+
+a.content-box {
+    text-decoration: none;
 }
 
 .equal {
@@ -27,3 +36,10 @@ div.content-box:hover {
 div.disabled + div.node-value {
     color: #666666;
 }
+
+/* custom style for ng2-accordion #5bc0de;*/
+.panel.customClass .panel-heading {
+  background-color: #555555;
+  color: #fff;
+}
+

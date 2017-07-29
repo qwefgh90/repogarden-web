@@ -1,7 +1,8 @@
 <div class="container">
   <div style="text-align:center;margin-bottom:20px;">
     <h1><img src="{{userInfo.imgUrl}}" alt="Profile image"/></h1>
-    <h3><a target="_blank" href="{{userInfo.getProfileGithubUrl()}}">{{userInfo.id}}</a></h3>
+    <h3>
+<a target="_blank" href="{{userInfo.getProfileGithubUrl()}}"><img src="assets/GitHub-Mark-32px.png"/></a></h3>
   </div>
   <div class="row">
     <div class="col-sm-12">
@@ -13,11 +14,11 @@
         </div>
         <div>
           <span>vulnerable: </span>
-          <button class="btn btn-xs btn-danger" [tooltip]="popTemplate" placement="right" triggers="click:click" *ngIf="repo.cves.length >= 1" (click)="closeTooltip(popTemplate2)">fix it</button>
-          <button class="btn btn-xs btn-success" *ngIf="repo.cves.length == 0">clear</button>
-          <template #popTemplate>
+          <button class="btn btn-xs btn-danger" [tooltip]="popTemplate1" placement="right" triggers="click:click" *ngIf="getLastestCveCount(repo) >= 1" (click)="closeTooltip(popTemplate1)">fix it</button>
+          <button class="btn btn-xs btn-success" *ngIf="getLastestCveCount(repo) == 0">clear</button>
+          <template #popTemplate1>
             <header><span>CVE List</span>
-              <span class="glyphicon glyphicon-remove clickable" (click)="closeTooltip(popTemplate);"></span>
+              <span class="glyphicon glyphicon-remove clickable" (click)="closeTooltip(popTemplate1);"></span>
             </header>
             <div>
                 <div *ngFor="let cve of repo.cves"><a href="#">{{cve.cve}}</a></div>
@@ -26,7 +27,7 @@
         </div>
         <div>
           <span>typo: </span>
-          <button class="btn btn-xs" [tooltip]="popTemplate2" placement="right" triggers="click:click" (click)="closeTooltip(popTemplate)">3</button>
+          <button class="btn btn-xs" [tooltip]="popTemplate2" placement="right" triggers="click:click" (click)="closeTooltip(popTemplate2)">{{getLastestTypoCount(repo)}}</button>
           <template #popTemplate2>
             <header><span>Header</span>
               <span class="glyphicon glyphicon-remove clickable" (click)="closeTooltip(popTemplate2)"></span>

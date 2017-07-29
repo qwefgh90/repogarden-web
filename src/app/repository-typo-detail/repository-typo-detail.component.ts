@@ -1,88 +1,77 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Repository } from '../class/repository';
-import { Ng2TreeSettings, NodeSelectedEvent } from 'ng2-tree';
-import { GitNode, NodeType } from '../class/git-node';
+import { Branch } from '../class/branch';
+import { Commit } from '../class/commit';
+import { Ng2TreeSettings, NodeSelectedEvent, TreeModelSettings, NodeEvent } from 'ng2-tree';
+import { GitNode, TypoCounter, dfs } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
+import { tree as mockTree } from '../mock/mock-git-tree'
+import { TreeService } from '../tree.service';
+//import 'alertify'
 
+declare const alertify: any;
 
 @Component({
     selector: 'app-repository-typo-detail',
     templateUrl: './repository-typo-detail.component.html',
     styleUrls: ['./repository-typo-detail.component.css']
 })
-export class RepositoryTypoDetailComponent implements OnInit {
+export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
-    @Input('repository') selectedRepository: Repository;
+    @Input('selectedRepository') repository: Repository;
+    @Input('selectedId') userId: string;
+    @Input('selectedBranch') branch: Branch;
+    selectedNodeMap: Map<string, GitNode> = new Map<string, GitNode>();
 
+    public customClass: string = 'customClass';
     dummy: string = 'Template <script>alert("0wned")</script> <b>Syntax</b> and <mark>marked text</mark><br>next line';
 
-    typoInfo: TypoInfo;
+    private static logEvent(message: string): void {
+        console.log(message);
+        alertify.message(`${message}`);
+    }
+
     formattingText: string;
 
     treeSettings: Ng2TreeSettings = {
         rootIsVisible: false
     }
 
-    tree: GitNode = {
-        value: '/',
-        type: NodeType.TREE,
-        children: [
-            {
-                value: 'library',
-                type: NodeType.TREE,
-                children: [
-                    { value: 'require.js', type: NodeType.BLOB },
-                    { value: 'angular.js', type: NodeType.BLOB },
-                    {
-                        value: 'rxjs.js <small>(1)</small>',
-                        typoInfo: {
-                            offsetTuple: [[0, 5]],
-                            body: 'Hlleo world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br>'
-                        }, type: NodeType.BLOB
-                    }
-                ]
-            },
-            {
-                value: 'html',
-                type: NodeType.TREE,
-                children: [
-                    { value: 'main.html', type: NodeType.BLOB },
-                    { value: 'left.html', type: NodeType.BLOB },
-                    { value: 'commercial.html', type: NodeType.BLOB }
-                ]
-            },
-            {
-                value: 'css',
-                type: NodeType.TREE,
-                children: [
-                ],
-            }
-        ],
-        settings: {
-            'static': true,
-            cssClasses: {
-                expanded: 'fa fa-caret-down',
-                collapsed: 'fa fa-caret-right',
-                empty: 'fa fa-caret-right disabled',
-                leaf: 'fa'
-            },
-            templates: {
-                node: '<i class="fa fa-folder-o left-content-box"></i>',
-                leaf: '<i class="fa fa-file-o"></i>'
-            }
-        }
-    };
+    cssSettings: TreeModelSettings = {
 
-    constructor() { }
+    }
+
+    constructor(public treeService: TreeService) { }//, private alertify: Alertify) { }
 
     ngOnInit() {
     }
 
-    select($event: NodeSelectedEvent) {
+    ngOnChanges() {
+        if (this.branch != undefined) {
+            let commit = this.branch.commits[0]
+            if (commit != undefined)
+                this.loadTree(commit);
+        }
+    }
+
+    select(commit: Commit, $event: NodeSelectedEvent) {
         let node = <GitNode>$event.node.node;
-        this.typoInfo = node.typoInfo;
         console.info($event);
-        this.formattingText = this.getFormattingText(this.typoInfo);
+        this.selectedNodeMap[commit.sha] = node;
+        this.formattingText = this.getFormattingText(node.typoInfo);
+    }
+
+    loadTree(commit: Commit) {
+        commit.getTree(this.treeService, this.repository.owner, this.repository.name).then(tree => {
+            RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
+        });
+    }
+
+    getTypoCount(commit: Commit): number {
+        if (commit.tree != undefined)
+            return dfs(commit.tree, new TypoCounter());
+        else
+            return undefined;
     }
 
     getFormattingText(typoInfo: TypoInfo): string {
