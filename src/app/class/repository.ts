@@ -2,8 +2,16 @@ import { Cve } from './cve';
 import { Branch } from './branch'
 
 export class Repository {
-    constructor(readonly owner, readonly name, readonly accessLink, readonly activated, readonly branches: Array<Branch>, readonly cves: Array<Cve>) {
+    constructor(readonly owner, readonly name, readonly accessLink, readonly activated, branches) {
+        this.branches = branches;
     }
+
+    private branches: Array<Branch> = [];
+
+    public getBranches(): Array<Branch> {
+        return this.branches;
+    }
+
     public getRepoUrl(id: string): string {
         return `https://github.com/${id}/${this.name}`;
     }

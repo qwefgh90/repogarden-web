@@ -70,7 +70,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                     })));
                 } else {
                     if (bodyObject.hasOwnProperty('activated'))
-                        REPOSITORIES[indexToFind] = new Repository(repositoryToFind['owner'], repositoryToFind['name'], repositoryToFind['accessLink'], bodyObject['activated'], repositoryToFind['branches'], repositoryToFind['cves']);
+                        REPOSITORIES[indexToFind] = new Repository(repositoryToFind['owner'], repositoryToFind['name'], repositoryToFind['accessLink'], bodyObject['activated'], repositoryToFind['branches']);
                     connection.mockRespond(new Response(new ResponseOptions({
                         status: 200
                     })));

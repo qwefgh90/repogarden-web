@@ -35,7 +35,7 @@
       <tabset>
         <tab [active]="activeTab == 1" (select)="selectTab('Cve')">
           <template tabHeading>
-            CVEs <small>({{selectedRepository?.cves.length}})</small>
+            CVEs <small></small>
           </template>
           <app-repository-cve-detail [selectedRepository]="selectedRepository" [selectedId]="selectedId" [selectedBranch]="selectedBranch"></app-repository-cve-detail>
         </tab>

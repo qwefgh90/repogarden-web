@@ -41,7 +41,7 @@ export class RepositoryMasterComponent implements OnInit {
                 this.selectedId = params['id'];
                 this.selectedRepositoryName = params['repository'];
                 this.selectedRepository = this.repositories.find(repo => params['repository'] == repo.name);
-                this.branches = this.selectedRepository.branches;
+                this.branches = this.selectedRepository.getBranches();
                 this.selectedBranch = this.selectedRepository.getDefaultBranch();
 
                 let qparams = route.snapshot.queryParams
@@ -56,7 +56,7 @@ export class RepositoryMasterComponent implements OnInit {
                 let branchName = params['branch'] || this.selectedRepository.getDefaultBranch().name;
                 this.activeTab = tab;
                 console.log('query:' + JSON.stringify(params));
-                this.selectedBranch = this.selectedRepository.branches.find((branch: Branch) => branchName == branch.name);
+                this.selectedBranch = this.selectedRepository.getBranches().find((branch: Branch) => branchName == branch.name);
             });
 
         });
