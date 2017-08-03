@@ -7,6 +7,7 @@ import { GitNode, TypoCounter, dfs } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 import { tree as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
+import { GithubService } from '../repository.service';
 //import 'alertify'
 
 declare const alertify: any;
@@ -41,19 +42,24 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     }
 
-    constructor(public treeService: TreeService) { }//, private alertify: Alertify) { }
+    constructor(public githubService: GithubService, public treeService: TreeService) { }//, private alertify: Alertify) { }
 
     ngOnInit() {
     }
 
     ngOnChanges() {
         if (this.branch != undefined) {
-            if (this.branch.getCommits() != undefined) {
-                let commit = this.branch.getCommits()[0]
+            if (this.branch.commits == undefined) {
+                this.githubService.getCommits(this.repository, this.branch, 0, 10).then(commits => {
+                    this.branch.commits = commits;
+                    if (this.branch.commits.length > 0)
+                        this.loadTree(this.branch.commits[0]);
+                });
+                //                let commit = this.branch.getCommits()[0]
             }
-            //            if (commit != undefined)
-            //                this.loadTree(commit);
         }
+        //            if (commit != undefined)
+        //                this.loadTree(commit);
     }
 
     select(commit: Commit, $event: NodeSelectedEvent) {
@@ -63,10 +69,10 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         this.formattingText = this.getFormattingText(node.typoInfo);
     }
 
+
     loadTree(commit: Commit) {
-        commit.getTree(this.treeService, this.repository.owner, this.repository.name).then(tree => {
-            RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
-        });
+        this.githubService.getTree(this.repository, this.branch, commit.sha).then(tree => commit.tree = tree);
+        RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
     }
 
     getTypoCount(commit: Commit): number {

@@ -5,7 +5,6 @@
   </div>
 
   <div class="col-md-2 left-outer-box" [class.col-md-2]="!isCollapsed" [collapse]="isCollapsed">
-
     <div style="margin-bottom:3px"><span class="h5">Repositories</span><span class="glyphicon glyphicon-circle-arrow-left clickable" style="float:right" (click)="collapseToggle()"></span></div>
     <div *ngFor="let repo of repositories" class="left-inner-box">
       <a routerLink="/{{selectedId}}/{{repo.name}}"  class="content-box" style="display:block" [class.left-content-box-selected]="repo == selectedRepository" ><!--[queryParams]="{tab: activeTab, branch: repo.getDefaultBranch()?.name}"-->
@@ -13,39 +12,8 @@
         <div><a href="{{repo.getRepoUrl(userInfo.id)}}" target="_blank">github</a></div>
       </a>
     </div>
-
   </div>
   <div class="col-md-10" [class.col-md-10]="!isCollapsed">
-    <div class="container-fluid" [class.right-box-collapsed]="isCollapsed" >
-      <div style="margin-bottom:16px;">
-        <span class="h3">{{selectedRepositoryName}}</span>
-        <div style="float:right">
-          <div class="btn-group" dropdown>
-            <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-              {{selectedBranch?.name}}<span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu" role="menu" >
-              <li role="menuitem" *ngFor="let branch of branches"><a class="dropdown-item" routerLink="/{{selectedId}}/{{selectedRepositoryName}}" [queryParams]="{tab: activeTab, branch: branch.name}">{{branch.name}}</a></li>
-            </ul>
-          </div>
-          &nbsp;
-          <a href="{{selectedRepository?.getRepoUrl(selectedId)}}" target="_blank"><img src="assets/GitHub-Mark-32px.png"/></a>
-        </div>
-      </div>
-      <tabset>
-        <tab [active]="activeTab == 1" (select)="selectTab('Cve')">
-          <template tabHeading>
-            CVEs <small></small>
-          </template>
-          <app-repository-cve-detail [selectedRepository]="selectedRepository" [selectedId]="selectedId" [selectedBranch]="selectedBranch"></app-repository-cve-detail>
-        </tab>
-        <tab [active]="activeTab == 2" (select)="selectTab('Typo')">
-          <template tabHeading>
-            Typos <small>(0)</small>
-          </template>
-          <app-repository-typo-detail [selectedRepository]="selectedRepository" [selectedId]="selectedId" [selectedBranch]="selectedBranch"></app-repository-typo-detail>
-        </tab>
-      </tabset>
-    </div>
+    <app-branch-master  [selectedRepository]="selectedRepository" [selectedId]="selectedId"></app-branch-master>
   </div>
 </div>

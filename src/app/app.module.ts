@@ -38,6 +38,7 @@ import { RepositoryTypoDetailComponent } from './repository-typo-detail/reposito
 //ng2-tree
 import { TreeModule } from 'ng2-tree';
 import { CallbackComponent } from './callback/callback.component';
+import { BranchMasterComponent } from './branch-master/branch-master.component';
 
 declare const alertify: any;
 
@@ -54,6 +55,7 @@ declare const alertify: any;
         DebounceDirective,
         RepositoryTypoDetailComponent,
         CallbackComponent,
+        BranchMasterComponent,
     ],
     imports: [
         BrowserModule,
