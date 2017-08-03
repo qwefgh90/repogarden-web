@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RepositoryService } from '../repository.service';
+import { GithubService } from '../repository.service';
 import { ProfileService } from '../profile.service';
 import { Repository } from '../class/repository';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
     public activeCount: number;
     public userInfo: UserInfo;
 
-    constructor(private repositoryService: RepositoryService, private profileService: ProfileService) {
+    constructor(private repositoryService: GithubService, private profileService: ProfileService) {
         this.getRepositories();
 
         this.profileService.getObservableUserInfo().subscribe(userInfo => {
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
     ngOnInit() {
     }
 
-    private getRepositories(){
+    private getRepositories() {
         this.repositoryService.getRepositories().then(repositories => {
             this.activeCount = repositories.filter(repo => repo.activated == "on").length;
             this.repositories = repositories;
@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
         this.repositoryService.updateActivated(this.userInfo.id, repo.name, repo.activated).then(isSuccess => {
             //regardless of success or fail, fetch repositories and binding it.
             this.getRepositories();
-            if(!isSuccess)
+            if (!isSuccess)
                 console.error('update failed in server.');
         });
     }

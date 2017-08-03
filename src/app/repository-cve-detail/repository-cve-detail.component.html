@@ -1,6 +1,6 @@
 <div>
   <div class="container-fluid outer-box" >
-    <div class="row equal" *ngIf="branch?.getCommits().length == 0">
+    <div class="row equal" *ngIf="branch?.getCommits()?.length == 0">
       &nbsp;&nbsp;&nbsp;There are no commits in {{branch.name}} branch.
     </div>
     <accordion>

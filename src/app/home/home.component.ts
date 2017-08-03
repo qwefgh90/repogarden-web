@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { RepositoryService } from '../repository.service';
+import { GithubService } from '../repository.service';
 import { ProfileService } from '../profile.service';
 import { Repository } from '../class/repository';
 import { UserInfo } from '../class/user-info';
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
     @ViewChildren(TooltipDirective) tooltips: QueryList<TooltipDirective>;
 
-    constructor(private repositoryService: RepositoryService, private profileService: ProfileService) {
+    constructor(private repositoryService: GithubService, private profileService: ProfileService) {
         this.bindRepositories();
         this.bindUserInfo();
     }
@@ -44,17 +44,17 @@ export class HomeComponent implements OnInit {
     }
 
     public getLastestCveCount(repo: Repository) {
-//        if (repo.getDefaultBranch().commits.length == 0)
-            return 0;
-//        else
-//            return dfs(repo.getDefaultBranch().commits[0].tree, new CveCounter())
+        //        if (repo.getDefaultBranch().commits.length == 0)
+        return 0;
+        //        else
+        //            return dfs(repo.getDefaultBranch().commits[0].tree, new CveCounter())
     }
 
     public getLastestTypoCount(repo: Repository) {
-//        if (repo.getDefaultBranch().commits.length == 0)
-            return 0;
-//        else
-//            return dfs(repo.getDefaultBranch().commits[0].tree, new TypoCounter())
+        //        if (repo.getDefaultBranch().commits.length == 0)
+        return 0;
+        //        else
+        //            return dfs(repo.getDefaultBranch().commits[0].tree, new TypoCounter())
     }
 
     ngOnInit() {

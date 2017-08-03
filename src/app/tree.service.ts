@@ -10,6 +10,6 @@ export class TreeService {
 
     constructor(private http: Http) { }
     getTree(owner: string, repoName: string, sha: string): Promise<GitNode> {
-        return this.http.get(meta.treeUrl, { params: { 'repoName': repoName, 'owner': owner, 'sha': sha } }).map(response => response.json() as GitNode).toPromise()
+        return this.http.get(meta.treeUrl(owner, repoName, sha), { params: { 'repoName': repoName, 'owner': owner, 'sha': sha } }).map(response => response.json() as GitNode).toPromise()
     }
 }

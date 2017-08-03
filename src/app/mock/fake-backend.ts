@@ -1,6 +1,6 @@
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHRBackend, RequestOptions, Headers } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { REPOSITORIES } from '../mock/mock-repositories';
+import { REPOSITORIES, BRANCHES1, COMMITS1 } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
 import { tree2 } from '../mock/mock-git-tree';
 import { Repository } from '../class/repository';
@@ -17,6 +17,33 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
                     body: REPOSITORIES
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
+            if (connection.request.url.split('?')[0].endsWith('/branches') && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: BRANCHES1
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
+            if (connection.request.url.split('?')[0].endsWith('/commits') && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: COMMITS1
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
+            if (connection.request.url.split('?')[0].endsWith('/tree') && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: tree2
                 })));
                 console.info(JSON.stringify(connection.request));
                 return;

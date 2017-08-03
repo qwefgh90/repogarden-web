@@ -48,9 +48,11 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         if (this.branch != undefined) {
-            let commit = this.branch.getCommits()[0]
-            if (commit != undefined)
-                this.loadTree(commit);
+            if (this.branch.getCommits() != undefined) {
+                let commit = this.branch.getCommits()[0]
+            }
+            //            if (commit != undefined)
+            //                this.loadTree(commit);
         }
     }
 

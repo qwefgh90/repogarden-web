@@ -11,8 +11,12 @@ const commit2: Commit = new Commit("7ukm7j6km", "second commit", "20170505", "qw
 
 const commit3: Commit = new Commit("tl24k5t24", "third commit", "20170505", "qwefgh90", "leadersama", "url");
 
+export const COMMITS1 = [commit1, commit2, commit3];
+
+export const BRANCHES1: Branch[] = [new Branch("develop", undefined), new Branch("feature-2", undefined)]
+
 export const REPOSITORIES: Repository[] = [
-    new Repository('qwefgh90', 'opencv', 'http://www.naver.com', "on", [new Branch("develop", [commit1]), new Branch("feature-2", [])]),
+    new Repository('qwefgh90', 'opencv', 'http://www.naver.com', "on", undefined),
     new Repository('qwefgh90', 'repos', 'http://www.naver.com', "off", [new Branch("master", []), new Branch("feature-1", [])]),
     new Repository('qwefgh90', 'algorithm', 'http://www.naver.com', "on", [new Branch("master", [commit2, commit3]), new Branch("develop", [])])
 ];

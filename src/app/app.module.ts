@@ -16,7 +16,7 @@ import { BaseRequestOptions } from '@angular/http';
 //service
 import { ProfileService } from './profile.service';
 import { AuthGuardService } from './auth-guard.service';
-import { RepositoryService } from './repository.service';
+import { GithubService } from './repository.service';
 import { AuthService } from './auth.service';
 import { TreeService } from './tree.service';
 import { LogoutComponent } from './logout/logout.component';
@@ -97,7 +97,7 @@ declare const alertify: any;
     providers: [
         AuthGuardService,
         AuthService,
-        RepositoryService,
+        GithubService,
         ProfileService,
         TreeService,
         // providers used to create fake backend

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toPromise';
-import { RepositoryService } from '../repository.service';
+import { GithubService } from '../repository.service';
 import { ProfileService } from '../profile.service';
 import { Repository } from '../class/repository';
 import { UserInfo } from '../class/user-info';
@@ -34,31 +34,34 @@ export class RepositoryMasterComponent implements OnInit {
     selectedBranch: Branch;
     branches: Array<Branch>;
 
-    constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private repositoryService: RepositoryService) {
-        repositoryService.getRepositories().then(repos => {
+    constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private githubService: GithubService) {
+        githubService.getRepositories().then(repos => {
             this.repositories = repos;
             this.route.params.subscribe(params => {
                 this.selectedId = params['id'];
                 this.selectedRepositoryName = params['repository'];
                 this.selectedRepository = this.repositories.find(repo => params['repository'] == repo.name);
-                this.branches = this.selectedRepository.getBranches();
-                this.selectedBranch = this.selectedRepository.getDefaultBranch();
 
-                let qparams = route.snapshot.queryParams
-                let tab = qparams['tab'] || Tab.Cve;
-                let branchName = qparams['branch'] || this.selectedRepository.getDefaultBranch().name;
+                githubService.getBranches(this.selectedRepository).then((branches) => {
+                    this.selectedRepository.branches = branches;
+                    this.branches = this.selectedRepository.branches;
+                    this.selectedBranch = this.selectedRepository.getDefaultBranch();
+                    let qparams = route.snapshot.queryParams
+                    let tab = qparams['tab'] || Tab.Cve;
+                    let branchName = qparams['branch'] || this.selectedRepository.getDefaultBranch().name;
 
-                this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tab, branch: branchName } });
+                    this.router.navigate([this.selectedId, this.selectedRepositoryName], { queryParams: { tab: tab, branch: branchName } });
+                });
+
             });
 
             this.route.queryParams.subscribe(params => {
+                console.log('query:' + JSON.stringify(params));
                 let tab = params['tab'] || Tab.Cve;
                 let branchName = params['branch'] || this.selectedRepository.getDefaultBranch().name;
                 this.activeTab = tab;
-                console.log('query:' + JSON.stringify(params));
-                this.selectedBranch = this.selectedRepository.getBranches().find((branch: Branch) => branchName == branch.name);
+                this.selectedBranch = this.selectedRepository.branches.find((branch: Branch) => branchName == branch.name);
             });
-
         });
 
         profileService.getObservableUserInfo().subscribe(userInfo => {

@@ -1,10 +1,10 @@
 import { Commit } from './commit'
 
 export class Branch {
-    constructor(readonly name: string, commits: Array<Commit>) {
-        this.commits = commits;
+    constructor(readonly name: string, public commits?: Array<Commit>) {
+
     }
-    private commits: Array<Commit>;
+
     public getCommits(): Array<Commit> {
         return this.commits;
     }
