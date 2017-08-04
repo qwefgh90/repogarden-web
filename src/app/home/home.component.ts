@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
     @ViewChildren(TooltipDirective) tooltips: QueryList<TooltipDirective>;
 
-    constructor(private repositoryService: GithubService, private profileService: ProfileService) {
+    constructor(private githubService: GithubService, private profileService: ProfileService) {
         this.bindRepositories();
         this.bindUserInfo();
     }
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
     }
 
     private bindRepositories() {
-        this.repositoryService.getRepositories().then(repos => {
+        this.githubService.getRepositories().then(repos => {
             this.repositories = repos;
         }).catch(ex => {
             console.error(ex);

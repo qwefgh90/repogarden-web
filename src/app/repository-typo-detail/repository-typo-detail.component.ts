@@ -8,7 +8,6 @@ import { TypoInfo } from '../class/typo-info';
 import { tree as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
 import { GithubService } from '../repository.service';
-//import 'alertify'
 
 declare const alertify: any;
 
@@ -55,11 +54,8 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
                     if (this.branch.commits.length > 0)
                         this.loadTree(this.branch.commits[0]);
                 });
-                //                let commit = this.branch.getCommits()[0]
             }
         }
-        //            if (commit != undefined)
-        //                this.loadTree(commit);
     }
 
     select(commit: Commit, $event: NodeSelectedEvent) {
@@ -71,8 +67,10 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
 
     loadTree(commit: Commit) {
-        this.githubService.getTree(this.repository, this.branch, commit.sha).then(tree => commit.tree = tree);
-        RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
+        if (commit.tree == undefined) {
+            this.githubService.getTree(this.repository, this.branch, commit.sha).then(tree => commit.tree = tree);
+            RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
+        }
     }
 
     getTypoCount(commit: Commit): number {
