@@ -16,9 +16,9 @@ export const COMMITS1 = [commit1, commit2, commit3];
 export const BRANCHES1: Branch[] = [new Branch("develop", undefined), new Branch("feature-2", undefined)]
 
 export const REPOSITORIES: Repository[] = [
-    new Repository('qwefgh90', 'opencv', 'http://www.naver.com', "on", undefined),
-    new Repository('qwefgh90', 'repos', 'http://www.naver.com', "off", [new Branch("master", []), new Branch("feature-1", [])]),
-    new Repository('qwefgh90', 'algorithm', 'http://www.naver.com', "on", [new Branch("master", [commit2, commit3]), new Branch("develop", [])])
+    new Repository(1, 'qwefgh90', 'opencv', 'http://www.naver.com', "on", undefined),
+    new Repository(2, 'qwefgh90', 'repos', 'http://www.naver.com', "off", [new Branch("master", []), new Branch("feature-1", [])]),
+    new Repository(3, 'qwefgh90', 'algorithm', 'http://www.naver.com', "on", [new Branch("master", [commit2, commit3]), new Branch("develop", [])])
 ];
 
 //https://github.com/victims/victims-cve-db/blob/master/database/java/2017/3161.yaml

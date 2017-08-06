@@ -1,18 +1,19 @@
 import { Cve } from './cve';
 import { GitNode } from './git-node';
 import { TreeService } from '../tree.service';
+import { Repository } from './repository'
 
 export class Commit {
     constructor(readonly sha: string, readonly message: string, readonly date: string, readonly committerEmail: string, readonly committerName: string, readonly url: string, public tree?: GitNode) { }
 
     private isLoaded = false;
 
-    getTree(treeService: TreeService, owner: string, repoName: string): Promise<GitNode> {
+    getTree(treeService: TreeService, repository: Repository): Promise<GitNode> {
         let promise = new Promise<GitNode>((resolve, reject) => {
             if (this.isLoaded)
                 resolve(this.tree);
             else {
-                let treePromise = treeService.getTree(owner, repoName, this.sha);
+                let treePromise = treeService.getTree(repository, this.sha);
                 treePromise.then(value => {
                     this.isLoaded = true;
                     this.tree = value;
