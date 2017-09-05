@@ -19,10 +19,9 @@
             <tree [tree]="commit?.tree" [settings]="treeSettings" (nodeSelected)="select(commit, $event)"></tree>
           </div>
           <div class="col-md-6 col-sm-12">
-            <div *ngIf="selectedNodeMap[commit.sha]?.typoInfo" style="margin-bottom:5px; border-bottom:1px solid #aaaaaa">{{selectedNodeMap[commit.sha]?.value}}</div>
+            <div *ngIf="selectedNodeMap[commit.sha]?.value" style="margin-bottom:5px; border-bottom:1px solid #aaaaaa">{{selectedNodeMap[commit.sha]?.value}}</div>
             <div style="float:right"><a *ngIf="selectedNodeMap[commit.sha]?.githubLink" href="{{selectedNodeMap[commit.sha]?.githubLink}}" target="_blank" class="glyphicon glyphicon-link"></a></div>
-            <div [innerHtml]="getFormattingText(selectedNodeMap[commit.sha]?.typoInfo)">
-            </div>
+            <app-highlight-text [typoInfo]="selectedNodeMap[commit.sha]?.typoInfo"></app-highlight-text>
           </div>
         </div>
 

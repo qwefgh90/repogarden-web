@@ -3,7 +3,7 @@ import { GitNode } from './git-node';
 import { TreeService } from '../tree.service';
 
 export class Commit {
-    constructor(readonly sha: string, readonly message: string, readonly date: string, readonly committerEmail: string, readonly committerName: string, readonly url: string, public tree?: GitNode) { }
+    constructor(readonly sha: string, readonly message: string, readonly date: string, readonly committerEmail: string, readonly committerName: string, readonly url: string, readonly typoStatId: number, public tree?: GitNode) { }
 
     private isLoaded = false;
 

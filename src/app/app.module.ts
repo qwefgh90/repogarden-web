@@ -38,7 +38,8 @@ import { RepositoryTypoDetailComponent } from './repository-typo-detail/reposito
 //ng2-tree
 import { TreeModule } from 'ng2-tree';
 import { CallbackComponent } from './callback/callback.component';
-import { BranchMasterComponent } from './branch-master/branch-master.component';
+import { BranchMasterComponent } from './branch-master/branch-master.component'
+import { HighlightTextComponent } from './highlight-text/highlight-text.component';
 
 declare const alertify: any;
 
@@ -56,6 +57,7 @@ declare const alertify: any;
         RepositoryTypoDetailComponent,
         CallbackComponent,
         BranchMasterComponent,
+        HighlightTextComponent,
     ],
     imports: [
         BrowserModule,
@@ -106,7 +108,6 @@ declare const alertify: any;
         fakeBackendProvider,
         MockBackend,
         BaseRequestOptions
-
     ],
     bootstrap: [AppComponent]
 })

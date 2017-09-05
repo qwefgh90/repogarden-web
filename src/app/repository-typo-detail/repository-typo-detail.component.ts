@@ -8,6 +8,7 @@ import { TypoInfo } from '../class/typo-info';
 import { tree as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
 import { GithubService } from '../repository.service';
+import { HighlightTextComponent } from '../highlight-text/highlight-text.component'
 
 declare const alertify: any;
 
@@ -30,8 +31,6 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         console.log(message);
         alertify.message(`${message}`);
     }
-
-    formattingText: string;
 
     treeSettings: Ng2TreeSettings = {
         rootIsVisible: false
@@ -62,7 +61,6 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         let node = <GitNode>$event.node.node;
         console.info($event);
         this.selectedNodeMap[commit.sha] = node;
-        this.formattingText = this.getFormattingText(node.typoInfo);
     }
 
 

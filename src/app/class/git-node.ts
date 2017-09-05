@@ -11,6 +11,7 @@ export interface GitNode extends TreeModel {
     value: string;
     type: NodeType;
     children: Array<GitNode>;
+    path: string;
     githubLink?: string;
     typoInfo?: TypoInfo;
     cves?: Array<Cve>;
