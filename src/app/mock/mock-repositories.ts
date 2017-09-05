@@ -3,13 +3,13 @@ import { Commit } from '../class/commit';
 import { Cve } from '../class/cve';
 import { Branch } from '../class/branch';
 import { cve1, cve2, cve3 } from './mock-cve';
-import { tree, tree2 } from './mock-git-tree';
+import { tree2 } from './mock-git-tree';
 
-const commit1: Commit = new Commit("aasdvf23cv", "first commit", "20170505", "qwefgh90", "leadersama", "url");
+const commit1: Commit = new Commit("aasdvf23cv", "first commit", "20170505", "qwefgh90", "leadersama", "url", 1234);
 
-const commit2: Commit = new Commit("7ukm7j6km", "second commit", "20170505", "qwefgh90", "leadersama", "url");
+const commit2: Commit = new Commit("7ukm7j6km", "second commit", "20170505", "qwefgh90", "leadersama", "url", 2345);
 
-const commit3: Commit = new Commit("tl24k5t24", "third commit", "20170505", "qwefgh90", "leadersama", "url");
+const commit3: Commit = new Commit("tl24k5t24", "third commit", "20170505", "qwefgh90", "leadersama", "url", 3456);
 
 export const COMMITS1 = [commit1, commit2, commit3];
 

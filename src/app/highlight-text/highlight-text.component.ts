@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { TypoInfo, TypoComponent } from '../class/typo-info';
-import * as $ from 'jquery';
-//declare const $: JQueryStatic;
+
+declare var jQuery: any;
 
 @Component({
     selector: 'app-highlight-text',
@@ -66,7 +66,7 @@ export class HighlightTextComponent implements OnInit, OnChanges {
     }
 
     encodeHtml(value: string): string {
-        return $('<div/>').text(value).html();
+        return jQuery('<div/>').text(value).html();
     }
 
     ngOnInit() {

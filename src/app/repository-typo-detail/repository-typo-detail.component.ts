@@ -5,7 +5,7 @@ import { Commit } from '../class/commit';
 import { Ng2TreeSettings, NodeSelectedEvent, TreeModelSettings, NodeEvent } from 'ng2-tree';
 import { GitNode, TypoCounter, dfs } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
-import { tree as mockTree } from '../mock/mock-git-tree'
+import { tree2 as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
 import { GithubService } from '../repository.service';
 import { HighlightTextComponent } from '../highlight-text/highlight-text.component'
