@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { TypoInfo, TypoComponent } from '../class/typo-info';
-
+import { GitNode, NodeType } from '../class/git-node';
 declare var jQuery: any;
 
 @Component({
@@ -9,7 +9,7 @@ declare var jQuery: any;
     styleUrls: ['./highlight-text.component.css']
 })
 export class HighlightTextComponent implements OnInit, OnChanges {
-    @Input() typoInfo: TypoInfo;
+    @Input() node: GitNode;
     @Input() className: string;
     formattingText: string;
 
@@ -18,10 +18,14 @@ export class HighlightTextComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        if (this.typoInfo != null)
-            this.formattingText = this.getForamttingText(this.typoInfo);
-        else
+        if (this.node == undefined || this.node.type == NodeType.TREE) {
             this.formattingText = "";
+        } else {
+            if (this.node.typoInfo.offsetTuple == undefined || this.node.typoInfo.offsetTuple.length == 0)
+                this.formattingText = "Typos are not found.";
+            else
+                this.formattingText = this.getForamttingText(this.node.typoInfo);
+        }
     }
 
     getTypoTupleForAllScope(offsetTuple: Array<TypoComponent>, length: number): Array<TypoComponent> {

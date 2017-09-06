@@ -25,15 +25,15 @@ describe('HighlightTextComponent', () => {
 
     it('should fill a list with tuples', () => {
         let result = [[0, 2], [2, 5], [7, 3]];
-        let valueToTest = component.getTypoTupleForAllScope([[2, 5]], 10);
+        let valueToTest = component.getTypoTupleForAllScope([{ id: 2, offset: 2, length: 5, suggestedList: ["..."], disabled: false }], 10);
         result.forEach(function(v, index, a) {
-            expect(v[0]).toBe(valueToTest[index][0]);
-            expect(v[1]).toBe(valueToTest[index][1]);
+            expect(v[0]).toBe(valueToTest[index].offset);
+            expect(v[1]).toBe(valueToTest[index].length);
         });
     });
     it('should be highlight text', () => {
         let body = "himangodoc";
-        let formattingTextToTest = component.getForamttingText({ offsetTuple: [[2, 5]], body: body });
-        expect(formattingTextToTest).toBe("hi<em>mango</em>doc");
+        let formattingTextToTest = component.getForamttingText({ offsetTuple: [{ id: 2, offset: 2, length: 5, suggestedList: ["..."], disabled: false }], body: body });
+        expect(formattingTextToTest).toBe("hi<strong>mango</strong>doc");
     });
 });

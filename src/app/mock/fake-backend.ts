@@ -3,6 +3,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { REPOSITORIES, BRANCHES1, COMMITS1 } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
 import { tree2 } from '../mock/mock-git-tree';
+import { typoInfo1, typoInfo2 } from '../mock/mock-typo-info';
 import { Repository } from '../class/repository';
 
 export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
@@ -48,7 +49,15 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 console.info(JSON.stringify(connection.request));
                 return;
             }
-
+            if (connection.request.url.split('?')[0].match(/\/typostats\/\d+/) && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: (parseInt((Math.random() * 100).toString()) % 2) == 1 ? typoInfo1 : typoInfo2
+                })));
+                console.info((parseInt((Math.random() * 100).toString()) % 2) == 1);
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
             if (connection.request.url.split('?')[0].endsWith('/tree') && connection.request.method === RequestMethod.Get) {
                 let paramsBlock = connection.request.url.split("?")[1];
                 let paramsMap = paramsBlock.split('&').reduce((p, c) => {

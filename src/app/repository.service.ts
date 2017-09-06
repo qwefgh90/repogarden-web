@@ -4,6 +4,7 @@ import { Repository } from './class/repository';
 import { Commit } from './class/commit';
 import { Branch } from './class/branch';
 import { GitNode } from './class/git-node';
+import { TypoInfo } from './class/typo-info';
 import { REPOSITORIES } from './mock/mock-repositories';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
@@ -34,6 +35,11 @@ export class GithubService {
     getTree(repository: Repository, branch: Branch, sha: string): Promise<GitNode> {
         return this.http.get(meta.treeUrl(repository.owner, repository.name, sha))
             .map(response => response.json() as GitNode).toPromise();
+    }
+
+    getTypos(repository: Repository, branch: Branch, typoStatId: number): Promise<TypoInfo> {
+        return this.http.get(meta.typoUrl(repository.owner, repository.name, branch.name, typoStatId))
+            .map(response => response.json() as TypoInfo).toPromise();
     }
 
     updateActivated(userName: string, repositoryName: string, activated: boolean): Promise<boolean> {
