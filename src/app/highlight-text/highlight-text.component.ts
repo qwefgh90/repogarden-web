@@ -1,7 +1,10 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, QueryList, ViewChildren, ElementRef, Renderer, EventEmitter } from '@angular/core';
 import { TypoInfo, TypoComponent } from '../class/typo-info';
 import { GitNode, NodeType } from '../class/git-node';
+import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+
 declare var jQuery: any;
+declare const alertify: any;
 
 @Component({
     selector: 'app-highlight-text',
@@ -10,11 +13,22 @@ declare var jQuery: any;
 })
 export class HighlightTextComponent implements OnInit, OnChanges {
     @Input() node: GitNode;
-    @Input() className: string;
+    @Output() onTypoCompRemoved = new EventEmitter<number>();
     formattingText: string;
+    elementRef: ElementRef;
+    renderer: Renderer;
+    handlerToRemoveListener: Array<Function> = [];
+    @ViewChildren(TooltipDirective) tooltips: QueryList<TooltipDirective>;
 
-    constructor() {
+    constructor(elementRef: ElementRef, renderer: Renderer) {
+        this.elementRef = elementRef;
+        this.renderer = renderer;
+    }
 
+    handler(): void {
+        console.log(this);
+        console.log(this.formattingText);
+        alertify.message("hello world");
     }
 
     ngOnChanges() {
@@ -23,8 +37,20 @@ export class HighlightTextComponent implements OnInit, OnChanges {
         } else {
             if (this.node.typoInfo.offsetTuple == undefined || this.node.typoInfo.offsetTuple.length == 0)
                 this.formattingText = "Typos are not found.";
-            else
-                this.formattingText = this.getForamttingText(this.node.typoInfo);
+            else {
+                this.formattingText = this.getFormattingText(this.node.typoInfo);
+                setTimeout(() => {
+                    this.handlerToRemoveListener.forEach(remover => remover());
+                    this.handlerToRemoveListener = [];
+                    this.elementRef.nativeElement.querySelectorAll('.tooltiptext span').forEach(e => {
+                        let remove = this.renderer.listen(e, 'click', () => {
+                            //                            alertify.message('component id: ' + e.title);
+                            this.onTypoCompRemoved.emit(parseInt(e.title));
+                        });
+                        this.handlerToRemoveListener.push(remove);
+                    });
+                }, 500);
+            }
         }
     }
 
@@ -52,21 +78,22 @@ export class HighlightTextComponent implements OnInit, OnChanges {
         }, new Array<TypoComponent>());
     }
 
-    getForamttingText(typoInfo: TypoInfo): string {
+    getFormattingText(typoInfo: TypoInfo): string {
         let tupleArray = this.getTypoTupleForAllScope(typoInfo.offsetTuple, typoInfo.body.length);
         let body = typoInfo.body;
-        let outer = this;
-        let formattingArray = tupleArray.map(function(v, index, a) {
+        //        let outer = this;
+        let formattingArray = tupleArray.map((v, index, a) => {
             if (v.id == undefined)
-                return outer.encodeHtml(body.substr(v.offset, v.length));
+                return this.encodeHtml(body.substr(v.offset, v.length));
             else
-                return outer.applyFormat(outer.encodeHtml(body.substr(v.offset, v.length)), outer.className);
+                return this.applyFormat(this.encodeHtml(body.substr(v.offset, v.length)), v.id.toString());
         });
         return formattingArray.reduce(function(p, c, index, arr) { return p + c; }, "");
     }
 
-    applyFormat(str: string, className: string): string {
-        return '<strong>' + str + '</strong>';
+    applyFormat(str: string, title: string): string {
+        return '<div class="tooltip-src"><b>' + str
+            + `</b><div class="tooltiptext">title <span title="${title}" class="glyphicon glyphicon-remove"></span><br>description<br></div></div>`;
     }
 
     encodeHtml(value: string): string {

@@ -32,7 +32,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 return;
             }
 
-            if (connection.request.url.split('?')[0].endsWith('/commits') && connection.request.method === RequestMethod.Get) {
+            if (connection.request.url.split('?')[0].endsWith('/typoStats') && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
                     body: COMMITS1
@@ -41,7 +41,15 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 return;
             }
 
-            if (connection.request.url.split('?')[0].endsWith('/tree') && connection.request.method === RequestMethod.Get) {
+            if (connection.request.url.split('?')[0].match(/\/typoCompId\/\d+/) && connection.request.method === RequestMethod.Delete) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
+            if (connection.request.url.split('?')[0].match(/trees\\?/) && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
                     body: tree2
@@ -49,7 +57,8 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 console.info(JSON.stringify(connection.request));
                 return;
             }
-            if (connection.request.url.split('?')[0].match(/\/typostats\/\d+/) && connection.request.method === RequestMethod.Get) {
+
+            if (connection.request.url.split('?')[0].match(/\/typostats\/\d+\/typos/) && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
                     body: (parseInt((Math.random() * 100).toString()) % 2) == 1 ? typoInfo1 : typoInfo2
@@ -58,6 +67,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 console.info(JSON.stringify(connection.request));
                 return;
             }
+
             if (connection.request.url.split('?')[0].endsWith('/tree') && connection.request.method === RequestMethod.Get) {
                 let paramsBlock = connection.request.url.split("?")[1];
                 let paramsMap = paramsBlock.split('&').reduce((p, c) => {

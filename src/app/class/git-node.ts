@@ -17,10 +17,6 @@ export interface TreeEntryEx {
     type: string;
 }
 
-export function convertTreeEntryToGitNode(entryArr: Array<TreeEntryEx>): GitNode {
-    return convertTreeEntryToGitNodeWithVisitor(entryArr, new GitNodeVistor());
-}
-
 export interface GitNode extends TreeModel {
     value: string;
     type: NodeType;
@@ -30,6 +26,10 @@ export interface GitNode extends TreeModel {
     githubLink?: string;
     typoInfo?: TypoInfo;
     cves?: Array<Cve>;
+}
+
+export function convertTreeEntryToGitNode(entryArr: Array<TreeEntryEx>): GitNode {
+    return convertTreeEntryToGitNodeWithVisitor(entryArr, new GitNodeVistor());
 }
 
 export abstract class Visitor<A, B> {

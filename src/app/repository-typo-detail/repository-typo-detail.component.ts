@@ -78,4 +78,8 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         else
             return undefined;
     }
+
+    removeTypoComp(typoCompId: number) {
+        alertify.message(typoCompId + " is removed");
+    }
 }

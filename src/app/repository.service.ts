@@ -27,8 +27,8 @@ export class GithubService {
             .map(response => response.json() as Array<Branch>).toPromise();
     }
 
-    getCommits(repository: Repository, branch: Branch, offset: number, size: number): Promise<Array<Commit>> {
-        return this.http.get(meta.commitsUrl(repository.owner, repository.name, branch.name))
+    getTypoStats(repository: Repository, branch: Branch, offset: number, size: number): Promise<Array<Commit>> {
+        return this.http.get(meta.typoStatsUrl(repository.owner, repository.name, branch.name))
             .map(response => response.json() as Array<Commit>).toPromise();
     }
 
@@ -38,12 +38,17 @@ export class GithubService {
     }
 
     getTypos(repository: Repository, branch: Branch, typoStatId: number): Promise<TypoInfo> {
-        return this.http.get(meta.typoUrl(repository.owner, repository.name, branch.name, typoStatId))
+        return this.http.get(meta.typosUrl(repository.owner, repository.name, branch.name, typoStatId))
             .map(response => response.json() as TypoInfo).toPromise();
     }
 
     updateActivated(userName: string, repositoryName: string, activated: boolean): Promise<boolean> {
         let requestUrl = `api/repositories/${userName}/${repositoryName}`;
         return this.http.put(requestUrl, { activated: activated }).map(response => response.ok).toPromise();
+    }
+
+    disableTypoComponent(owner: string, repoName: string, branchName: string, typoStatId: number, typoId: number, typoCompId: number): Promise<boolean> {
+        return this.http.delete(meta.typoCompUrl(owner, repoName, branchName, typoStatId, typoId, typoCompId))
+            .map(response => response.status == 200).toPromise();
     }
 }
