@@ -81,19 +81,20 @@ export class HighlightTextComponent implements OnInit, OnChanges {
     getFormattingText(typoInfo: TypoInfo): string {
         let tupleArray = this.getTypoTupleForAllScope(typoInfo.offsetTuple, typoInfo.body.length);
         let body = typoInfo.body;
-        //        let outer = this;
         let formattingArray = tupleArray.map((v, index, a) => {
             if (v.id == undefined)
                 return this.encodeHtml(body.substr(v.offset, v.length));
             else
                 return this.applyFormat(this.encodeHtml(body.substr(v.offset, v.length)), v.id.toString());
         });
-        return formattingArray.reduce(function(p, c, index, arr) { return p + c; }, "");
+        let formattingText = formattingArray.reduce(function(p, c, index, arr) { return p + c; }, "").replace(/\n/g,'<br>');
+        console.log(formattingText);
+        return formattingText;
     }
 
     applyFormat(str: string, title: string): string {
         return '<div class="tooltip-src"><b>' + str
-            + `</b><div class="tooltiptext">title <span title="${title}" class="glyphicon glyphicon-remove"></span><br>description<br></div></div>`;
+            + `</b><div class="tooltiptext">title <button class="sm"><span title="${title}" class="glyphicon glyphicon-trash"></span></button><br>description<br></div></div>`;
     }
 
     encodeHtml(value: string): string {

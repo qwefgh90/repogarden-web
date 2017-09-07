@@ -2,7 +2,7 @@ import { TypoInfo } from '../class/typo-info';
 export const typoInfo1: TypoInfo = {
     id: 123,
     offsetTuple: [{ id: 1, offset: 5, length: 10, suggestedList: ["..."], disabled: false }],
-    body: 'Hlleo world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br>'
+    body: 'Hlleo world<br> world<br> world\n<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> world<br> wor\nld<br> world<br> world<br> world<br>'
 };
 export const typoInfo2: TypoInfo = {
     id: 124,
