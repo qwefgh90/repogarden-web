@@ -22,7 +22,7 @@
           <div class="col-md-6 col-sm-12">
             <div *ngIf= "selectedNodeMap[commit.sha]?.value" style="margin-bottom:5px; border-bottom:1px solid #aaaaaa">{{selectedNodeMap[commit.sha]?.value}}</div>
             <div style="float:right"><a *ngIf="selectedNodeMap[commit.sha]?.githubLink" href="{{selectedNodeMap[commit.sha]?.githubLink}}" target="_blank" class="glyphicon glyphicon-link"></a></div>
-            <app-highlight-text [node]="selectedNodeMap[commit.sha]" (onTypoCompRemoved)="removeTypoComp($event)"></app-highlight-text>
+            <app-highlight-text [node]="selectedNodeMap[commit.sha]" (onTypoCompRemoved)="removeTypoComp(commit, selectedNodeMap[commit.sha].typoInfo.id, $event)"></app-highlight-text>
           </div>
         </div>
 

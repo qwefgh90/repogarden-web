@@ -79,7 +79,15 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
             return undefined;
     }
 
-    removeTypoComp(typoCompId: number) {
-        alertify.message(typoCompId + " is removed");
+    removeTypoComp(commit: Commit, typoId: number, typoCompId: number) {
+        this.githubService.disableTypoComponent(this.repository.owner, this.repository.name, this.branch.name, commit.typoStatId, typoId, typoCompId).then(b => {
+            let index = this.selectedNodeMap[commit.sha].typoInfo.offsetTuple.findIndex((comp) => { return comp.id == typoCompId });
+            if (index != -1) {
+                this.selectedNodeMap[commit.sha].typoInfo.offsetTuple.splice(index, 1)
+                //update the input value of child component for running dirty checking
+                this.selectedNodeMap[commit.sha] =
+                    Object.assign({}, this.selectedNodeMap[commit.sha]);
+            }
+        });
     }
 }

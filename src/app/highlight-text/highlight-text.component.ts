@@ -25,12 +25,6 @@ export class HighlightTextComponent implements OnInit, OnChanges {
         this.renderer = renderer;
     }
 
-    handler(): void {
-        console.log(this);
-        console.log(this.formattingText);
-        alertify.message("hello world");
-    }
-
     ngOnChanges() {
         if (this.node == undefined || this.node.type == NodeType.TREE) {
             this.formattingText = "";
@@ -43,9 +37,8 @@ export class HighlightTextComponent implements OnInit, OnChanges {
                     this.handlerToRemoveListener.forEach(remover => remover());
                     this.handlerToRemoveListener = [];
                     this.elementRef.nativeElement.querySelectorAll('.tooltiptext span').forEach(e => {
-                        let remove = this.renderer.listen(e, 'click', () => {
-                            //                            alertify.message('component id: ' + e.title);
-                            this.onTypoCompRemoved.emit(parseInt(e.title));
+                        let remove = this.renderer.listen(e, 'click', (event) => {
+                            this.onTypoCompRemoved.emit(parseInt(event.srcElement.title));
                         });
                         this.handlerToRemoveListener.push(remove);
                     });
@@ -85,16 +78,21 @@ export class HighlightTextComponent implements OnInit, OnChanges {
             if (v.id == undefined)
                 return this.encodeHtml(body.substr(v.offset, v.length));
             else
-                return this.applyFormat(this.encodeHtml(body.substr(v.offset, v.length)), v.id.toString());
+                return this.applyFormat(this.encodeHtml(body.substr(v.offset, v.length)), v.id.toString(), v);
         });
-        let formattingText = formattingArray.reduce(function(p, c, index, arr) { return p + c; }, "").replace(/\n/g,'<br>');
-        console.log(formattingText);
+        let formattingText = formattingArray.reduce(function(p, c, index, arr) { return p + c; }, "").replace(/\n/g, '<br>');
         return formattingText;
     }
 
-    applyFormat(str: string, title: string): string {
-        return '<div class="tooltip-src"><b>' + str
-            + `</b><div class="tooltiptext">title <button class="sm"><span title="${title}" class="glyphicon glyphicon-trash"></span></button><br>description<br></div></div>`;
+    applyFormat(str: string, title: string, comp: TypoComponent): string {
+        let suggest = comp.suggestedList.reduce((prev, v, index, arr) => {
+            if (prev == "")
+                return `${index + 1}. ${v}`;
+            else
+                return `${prev}<br>${index + 1}. ${v}`;
+        }, "");
+        return '<span class="tooltip-src"><span class="typo">' + str
+            + `</span><div class="tooltiptext"><button class="sm"><span title="${title}" class="glyphicon glyphicon-trash"></span></button> suggestions<br>${suggest}<br></div></span>`;
     }
 
     encodeHtml(value: string): string {

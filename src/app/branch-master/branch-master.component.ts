@@ -48,16 +48,20 @@ export class BranchMasterComponent implements OnInit, OnChanges {
                 console.log(`${this.repository.name}'s branches are loaded.`);
                 this.repository.branches = branches;
 
-                let qparams = this.route.snapshot.queryParams;
-                let tab = qparams['tab'] || Tab.Cve;
-                let branchName = qparams['branch'] || this.repository.getDefaultBranch().name;
+                let tab = Tab.Cve;
+                let branchName = this.repository.getDefaultBranch().name;
+                this.selectedBranch = this.repository.getDefaultBranch();
                 if (this.qparamSubscription == undefined) {
                     this.qparamSubscription = this.route.queryParams.subscribe(params => {
                         console.log(`query params ${params}`);
                         let tab = params['tab'] || Tab.Cve;
                         let branchName = params['branch'] || this.repository.getDefaultBranch().name;
                         this.activeTab = tab;
-                        this.selectedBranch = this.repository.branches.find((branch: Branch) => branchName == branch.name);
+                        if (this.repository.branches != undefined) {
+                            let found = this.repository.branches.find((branch: Branch) => branchName == branch.name);
+                            if (found != undefined)
+                                this.selectedBranch = found;
+                        }
                     });
                 }
                 this.router.navigate([this.id, this.repository.name], { queryParams: { tab: tab, branch: branchName } });

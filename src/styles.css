@@ -45,10 +45,15 @@ div.disabled + div.node-value {
 
 /* tooltip */
 .tooltip-src {
-    font-weight: 700;
     position: relative;
-    display: inline-block;
+    fond-size: 15px;
+    /*display: inline-block;*/
     /*border-bottom: 1px dotted black;*/
+}
+
+.tooltip-src .typo {
+    text-decoration: line-through;
+    font-weight: bold;
 }
 
 .tooltip-src .tooltiptext {
@@ -56,16 +61,15 @@ div.disabled + div.node-value {
     width: 120px;
     background-color: black;
     color: #fff;
-    text-align: center;
+    text-align: left;
     border-radius: 6px;
-    padding: 5px 0;
+    padding: 7px 0px 7px 7px;
 
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    top: 20px;
-    left: 20px;
-             
+    top: 15px;
+    left: -40px;
 }
 
 .tooltip-src:hover .tooltiptext {
