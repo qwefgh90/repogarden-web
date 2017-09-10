@@ -29,7 +29,7 @@ export class HighlightTextComponent implements OnInit, OnChanges {
         if (this.node == undefined || this.node.type == NodeType.TREE) {
             this.formattingText = "";
         } else {
-            if (this.node.typoInfo.offsetTuple == undefined || this.node.typoInfo.offsetTuple.length == 0)
+            if (this.node.typoInfo == undefined || this.node.typoInfo.offsetTuple.length == 0)
                 this.formattingText = "Typos are not found.";
             else {
                 this.formattingText = this.getFormattingText(this.node.typoInfo);

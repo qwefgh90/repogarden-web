@@ -3,7 +3,7 @@ import { Repository } from '../class/repository';
 import { Branch } from '../class/branch';
 import { Commit } from '../class/commit';
 import { Ng2TreeSettings, NodeSelectedEvent, TreeModelSettings, NodeEvent } from 'ng2-tree';
-import { GitNode, TypoCounter, dfs } from '../class/git-node';
+import { GitNode, TypoCounter, dfs, TypoInfoBinder } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 import { tree2 as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
@@ -45,29 +45,41 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        /*if (this.branch != undefined) {
+        if (this.branch != undefined) {
             if (this.branch.commits == undefined) {
-                this.githubService.getCommits(this.repository, this.branch, 0, 10).then(commits => {
+                this.githubService.getTypoStats(this.repository, this.branch, 0, 10).then(commits => {
                     this.branch.commits = commits;
                     if (this.branch.commits.length > 0)
                         this.loadTree(this.branch.commits[0]);
                 });
             }
-        }*/
+        }
     }
 
-    select(commit: Commit, $event: NodeSelectedEvent) {
-        let node = <GitNode>$event.node.node;
-        console.info($event);
-        this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).then(typoInfo => {
-            node.typoInfo = typoInfo;
-            this.selectedNodeMap[commit.sha] = node;
+    loadTypos(commit: Commit, targetTree: GitNode): Promise<GitNode> {
+        return this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).then(typoInfoArray => {
+            let typoTable = typoInfoArray.reduce((p, v, index, arr) => {
+                p.set(v.treeSha, v);
+                return p;
+            }, new Map<string, TypoInfo>());
+            dfs(targetTree, new TypoInfoBinder(typoTable));
+            console.info('A array of TypoInfo is bound in ' + commit.sha);
+            return targetTree;
         });
+    }
+
+
+    selectGitNode(commit: Commit, $event: NodeSelectedEvent) {
+        let node = <GitNode>$event.node.node;
+        this.selectedNodeMap[commit.sha] = node;
+        console.log(node);
     }
 
     loadTree(commit: Commit) {
         this.githubService.getTree(this.repository, this.branch, commit.sha).then(tree => {
-            commit.tree = tree;
+            this.loadTypos(commit, tree).then((tree) => {
+                commit.tree = tree;
+            });
         });
         RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
     }

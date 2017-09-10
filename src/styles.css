@@ -72,6 +72,10 @@ div.disabled + div.node-value {
     left: -40px;
 }
 
+.tooltiptext .glyphicon:hover {
+    cursor: pointer;
+}
+
 .tooltip-src:hover .tooltiptext {
     visibility: visible;
 }

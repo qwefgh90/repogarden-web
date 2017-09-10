@@ -1,7 +1,9 @@
 export interface TypoInfo {
     offsetTuple?: Array<TypoComponent>;
-    id?: number
+    id?: number;
     body: string;
+    treeSha: string;
+    path: string;
 }
 export interface TypoComponent {
     id?: number

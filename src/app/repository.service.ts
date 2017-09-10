@@ -37,9 +37,9 @@ export class GithubService {
             .map(response => response.json() as GitNode).toPromise();
     }
 
-    getTypos(repository: Repository, branch: Branch, typoStatId: number): Promise<TypoInfo> {
+    getTypos(repository: Repository, branch: Branch, typoStatId: number): Promise<Array<TypoInfo>> {
         return this.http.get(meta.typosUrl(repository.owner, repository.name, branch.name, typoStatId))
-            .map(response => response.json() as TypoInfo).toPromise();
+            .map(response => response.json() as Array<TypoInfo>).toPromise();
     }
 
     updateActivated(userName: string, repositoryName: string, activated: boolean): Promise<boolean> {

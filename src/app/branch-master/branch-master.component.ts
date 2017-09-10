@@ -45,15 +45,15 @@ export class BranchMasterComponent implements OnInit, OnChanges {
     ngOnChanges() {
         if (this.repository != undefined) {
             this.githubService.getBranches(this.repository).then((branches) => {
-                console.log(`${this.repository.name}'s branches are loaded.`);
                 this.repository.branches = branches;
-
-                let tab = Tab.Cve;
-                let branchName = this.repository.getDefaultBranch().name;
-                this.selectedBranch = this.repository.getDefaultBranch();
+                let queryParams = this.route.snapshot.queryParams;
+                let tab = queryParams['tab'] || Tab.Cve;
+                let branchName = queryParams['branch'] || this.repository.getDefaultBranch().name;
+                let found = branches.find((branch: Branch) => branchName == branch.name);
+                if (found != undefined)
+                    this.selectedBranch = found;
                 if (this.qparamSubscription == undefined) {
                     this.qparamSubscription = this.route.queryParams.subscribe(params => {
-                        console.log(`query params ${params}`);
                         let tab = params['tab'] || Tab.Cve;
                         let branchName = params['branch'] || this.repository.getDefaultBranch().name;
                         this.activeTab = tab;

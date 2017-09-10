@@ -22,19 +22,20 @@ export interface GitNode extends TreeModel {
     type: NodeType;
     children: Array<GitNode>;
     path: string;
+    treeSha: string;
     level?: number;
     githubLink?: string;
     typoInfo?: TypoInfo;
     cves?: Array<Cve>;
 }
 
-export function convertTreeEntryToGitNode(entryArr: Array<TreeEntryEx>): GitNode {
-    return convertTreeEntryToGitNodeWithVisitor(entryArr, new GitNodeVistor());
-}
-
 export abstract class Visitor<A, B> {
     acc: A;
-    abstract visit(tree: B, stack: Array<A>)
+    abstract visit(tree: B, stack: Array<B>)
+}
+
+export function convertTreeEntryToGitNode(entryArr: Array<TreeEntryEx>): GitNode {
+    return convertTreeEntryToGitNodeWithVisitor(entryArr, new GitNodeVisitor());
 }
 
 export function dfs<T>(tree: GitNode, visitor: Visitor<T, GitNode>): T {
@@ -56,6 +57,7 @@ export function convertTreeEntryToGitNodeWithVisitor(entryArr: Array<TreeEntryEx
             , path: entry.path
             , githubLink: entry.url
             , level: entry.level
+            , treeSha: entry.sha
         };
     };
     let stack = [];
@@ -75,11 +77,11 @@ export function convertTreeEntryToGitNodeWithVisitor(entryArr: Array<TreeEntryEx
     return visitor.acc;
 }
 
-export class GitNodeVistor extends Visitor<GitNode, GitNode>{
+export class GitNodeVisitor extends Visitor<GitNode, GitNode>{
     constructor() {
         super();
     }
-    acc: GitNode = { value: 'root', type: NodeType.TREE, children: [], path: '/' };
+    acc: GitNode = { value: 'root', type: NodeType.TREE, children: [], path: '/', treeSha: '' };
     visit(gitNode: GitNode, stack) {
         let len = stack.length;
         if (len != 0) {
@@ -113,4 +115,16 @@ export class TypoCounter extends Visitor<number, GitNode>{
                 this.acc = this.acc + node.typoInfo.offsetTuple.length;
         }
     }
+}
+
+export class TypoInfoBinder extends Visitor<number, GitNode>{
+    constructor(private map: Map<string, TypoInfo>) {
+        super();
+    }
+    visit(node: GitNode, stack) {
+        let v = this.map.get(node.treeSha);
+        if (v != undefined)
+            node.typoInfo = v;
+    }
+
 }

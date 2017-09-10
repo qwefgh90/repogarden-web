@@ -17,7 +17,7 @@
 
         <div class="row equal" *ngIf="commit.tree">
           <div class="col-md-6 col-sm-12 left-content-box">
-            <tree [tree]="commit?.tree" [settings]="treeSettings" (nodeSelected)="select(commit, $event)"></tree>
+            <tree [tree]="commit?.tree" [settings]="treeSettings" (nodeSelected)="selectGitNode(commit, $event)"></tree>
           </div>
           <div class="col-md-6 col-sm-12">
             <div *ngIf= "selectedNodeMap[commit.sha]?.value" style="margin-bottom:5px; border-bottom:1px solid #aaaaaa">{{selectedNodeMap[commit.sha]?.value}}</div>
