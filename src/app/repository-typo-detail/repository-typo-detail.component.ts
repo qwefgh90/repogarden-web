@@ -56,6 +56,11 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         }
     }
 
+    selectGitNode(commit: Commit, $event: NodeSelectedEvent) {
+        let node = <GitNode>$event.node.node;
+        this.selectedNodeMap[commit.sha] = node;
+    }
+
     loadTypos(commit: Commit, targetTree: GitNode): Promise<GitNode> {
         return this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).then(typoInfoArray => {
             let typoTable = typoInfoArray.reduce((p, v, index, arr) => {
@@ -63,25 +68,18 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
                 return p;
             }, new Map<string, TypoInfo>());
             dfs(targetTree, new TypoInfoBinder(typoTable));
-            console.info('A array of TypoInfo is bound in ' + commit.sha);
             return targetTree;
         });
-    }
-
-
-    selectGitNode(commit: Commit, $event: NodeSelectedEvent) {
-        let node = <GitNode>$event.node.node;
-        this.selectedNodeMap[commit.sha] = node;
-        console.log(node);
     }
 
     loadTree(commit: Commit) {
         this.githubService.getTree(this.repository, this.branch, commit.sha).then(tree => {
             this.loadTypos(commit, tree).then((tree) => {
                 commit.tree = tree;
+                console.info('A array of TypoInfo is bound in ' + commit.sha);
             });
         });
-        RepositoryTypoDetailComponent.logEvent(`tree is loaded in ${commit.sha}.`);
+        console.info(`tree is loaded in ${commit.sha}.`);
     }
 
     getTypoCount(commit: Commit): number {

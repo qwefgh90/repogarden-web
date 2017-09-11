@@ -8,7 +8,7 @@
     <div class="col-sm-12">
       <div class="repository-outer-box" *ngFor="let repo of repositories">
         <div class="reponame-box">
-          <a routerLink="/{{userInfo.id}}/{{repo.name}}" class="" style="font-size:large;">{{userInfo.id}}/{{repo.name}}</a>
+          <a routerLink="/{{userInfo.id}}/{{repo.name}}" class="" style="font-size:large;">{{repo.owner}}/{{repo.name}}</a>
           <button class="btn btn-xs btn-success" style="float:right" *ngIf="repo.activated == 'on'" routerLink="{{userInfo.getProfilePath()}}">running</button>
           <button class="btn btn-xs" style="float:right" *ngIf="repo.activated == 'off'" routerLink="{{userInfo.getProfilePath()}}">stopped</button>
         </div>

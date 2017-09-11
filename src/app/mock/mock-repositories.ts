@@ -5,12 +5,38 @@ import { Branch } from '../class/branch';
 import { cve1, cve2, cve3 } from './mock-cve';
 import { tree2 } from './mock-git-tree';
 
-const commit1: Commit = new Commit("aasdvf23cv", "first commit", "20170505", "qwefgh90", "leadersama", "url", 1234);
+const commit1: Commit =
+    {
+        sha: 'aasdvf23cv',
+        message: 'first commit',
+        date: '20170505',
+        committerEmail: 'qwefgh90',
+        committerName: 'leadersama',
+        url: 'url',
+        typoStatId: 1234,
+    };
 
-const commit2: Commit = new Commit("7ukm7j6km", "second commit", "20170505", "qwefgh90", "leadersama", "url", 2345);
+const commit2: Commit =
+    {
+        sha: '7ukm7j6km',
+        message: 'second commit',
+        date: '20170505',
+        committerEmail: 'qwefgh90',
+        committerName: 'leadersama',
+        url: 'url',
+        typoStatId: 2345,
+    };
 
-const commit3: Commit = new Commit("tl24k5t24", "third commit", "20170505", "qwefgh90", "leadersama", "url", 3456);
-
+const commit3: Commit =
+    {
+        sha: 'tl24k5t24',
+        message: 'third commit',
+        date: '20170505',
+        committerEmail: 'qwefgh90',
+        committerName: 'leadersama',
+        url: 'url',
+        typoStatId: 3456,
+    }
 export const COMMITS1 = [commit1, commit2, commit3];
 
 export const BRANCHES1: Branch[] = [new Branch("develop", undefined), new Branch("feature-2", undefined)]

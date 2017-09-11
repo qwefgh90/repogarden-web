@@ -64,7 +64,6 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                     body: [typoInfo1, typoInfo2]
                     // body: (parseInt((Math.random() * 100).toString()) % 2) == 1 ? typoInfo1 : typoInfo2
                 })));
-                console.info((parseInt((Math.random() * 100).toString()) % 2) == 1);
                 console.info(JSON.stringify(connection.request));
                 return;
             }

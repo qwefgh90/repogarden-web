@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome.component';
 import { LoginComponent } from './login/login.component';
 
+import { apiBackendProvider } from './api-backend.service';
 import { fakeBackendProvider } from './mock/fake-backend';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
@@ -105,7 +106,7 @@ declare const alertify: any;
         ProfileService,
         TreeService,
         // providers used to create fake backend
-        fakeBackendProvider,
+        (!isDevMode() ? fakeBackendProvider : apiBackendProvider),
         MockBackend,
         BaseRequestOptions
     ],

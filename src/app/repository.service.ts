@@ -16,8 +16,11 @@ export class GithubService {
     private repositoriesUrl = meta.repositoriesUrl;
     constructor(private http: Http) { }
 
+    private headers = new Headers({ 'Content-Type': 'application/json' });
+
     getRepositories(): Promise<Repository[]> {
-        return this.http.get(this.repositoriesUrl)
+        console.log('go repo');
+        return this.http.get(this.repositoriesUrl, { withCredentials: true })
             .map(response => response.json() as Repository[])
             .toPromise();
     }
