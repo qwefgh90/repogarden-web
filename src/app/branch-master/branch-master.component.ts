@@ -27,13 +27,13 @@ export class BranchMasterComponent implements OnInit, OnChanges {
     @Input('selectedRepository') repository: Repository;
     @Input('selectedId') id: string;
 
-    qparamSubscription: Subscription;
     userInfo: UserInfo;
     activeTab: Tab = Tab.Cve;
     selectedBranch: Branch;
+    private qparamSubscription: Subscription;
+    private branchSubscription: Subscription;
 
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private githubService: GithubService) {
-
         profileService.getObservableUserInfo().subscribe(userInfo => {
             this.userInfo = userInfo;
         });
@@ -44,23 +44,31 @@ export class BranchMasterComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         if (this.repository != undefined) {
-            this.githubService.getBranches(this.repository).then((branches) => {
+            console.log("getbranch");
+            if (this.branchSubscription != undefined)
+                this.branchSubscription.unsubscribe();
+            this.branchSubscription = this.githubService.getBranches(this.repository).subscribe((branches) => {
+                console.log("sub");
                 this.repository.branches = branches;
                 let queryParams = this.route.snapshot.queryParams;
                 let tab = queryParams['tab'] || Tab.Cve;
-                let branchName = queryParams['branch'] || this.repository.getDefaultBranch().name;
+                let branchName = queryParams['branch'] || this.repository.defaultBranch;
                 let found = branches.find((branch: Branch) => branchName == branch.name);
                 if (found != undefined)
                     this.selectedBranch = found;
+                else
+                    this.selectedBranch = undefined;
                 if (this.qparamSubscription == undefined) {
                     this.qparamSubscription = this.route.queryParams.subscribe(params => {
                         let tab = params['tab'] || Tab.Cve;
-                        let branchName = params['branch'] || this.repository.getDefaultBranch().name;
+                        let branchName = params['branch'] || this.repository.defaultBranch;
                         this.activeTab = tab;
                         if (this.repository.branches != undefined) {
                             let found = this.repository.branches.find((branch: Branch) => branchName == branch.name);
                             if (found != undefined)
                                 this.selectedBranch = found;
+                            else
+                                this.selectedBranch = undefined;
                         }
                     });
                 }

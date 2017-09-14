@@ -33,7 +33,6 @@ export class RepositoryMasterComponent implements OnInit {
     isCollapsed = false;
     activeTab: Tab = Tab.Cve;
     selectedBranch: Branch;
-    qparamSubscription: Subscription;
 
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private githubService: GithubService) {
         githubService.getRepositories().then(repos => {

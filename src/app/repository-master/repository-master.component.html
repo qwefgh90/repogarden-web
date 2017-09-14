@@ -9,7 +9,7 @@
     <div *ngFor="let repo of repositories" class="left-inner-box">
       <a routerLink="/{{selectedId}}/{{repo.name}}"  class="content-box" style="display:block" [class.left-content-box-selected]="repo == selectedRepository" >
         <div>{{repo.name}}</div>        
-        <div><a href="{{repo.getRepoUrl(userInfo.id)}}" target="_blank">github</a></div>
+        <!--<div><a href="{{repo.htmlUrl}}" target="_blank">github</a></div>-->
       </a>
     </div>
   </div>

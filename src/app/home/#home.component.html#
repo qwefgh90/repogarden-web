@@ -1,14 +1,14 @@
 <div class="container">
   <div style="text-align:center;margin-bottom:20px;">
-    <h1><img src="{{userInfo.imgUrl}}" alt="Profile image"/></h1>
+    <h1><img src="{{userInfo.imgUrl}}" width="230" height="230" alt="Profile image"/></h1>
     <h3>
-<a target="_blank" href="{{userInfo.getProfileGithubUrl()}}"><img src="assets/GitHub-Mark-32px.png"/></a></h3>
+      <a target="_blank" href="{{userInfo.getProfileGithubUrl()}}"><img src="assets/GitHub-Mark-32px.png"/></a></h3>
   </div>
   <div class="row">
     <div class="col-sm-12">
       <div class="repository-outer-box" *ngFor="let repo of repositories">
         <div class="reponame-box">
-          <a routerLink="/{{userInfo.id}}/{{repo.name}}" class="" style="font-size:large;">{{userInfo.id}}/{{repo.name}}</a>
+          <a routerLink="/{{userInfo.login}}/{{repo.name}}" class="" style="font-size:large;">{{repo.owner}}/{{repo.name}}</a>
           <button class="btn btn-xs btn-success" style="float:right" *ngIf="repo.activated == 'on'" routerLink="{{userInfo.getProfilePath()}}">running</button>
           <button class="btn btn-xs" style="float:right" *ngIf="repo.activated == 'off'" routerLink="{{userInfo.getProfilePath()}}">stopped</button>
         </div>
@@ -34,7 +34,6 @@
             </header>
             <div>body</div></template>
         </div>
-
       </div>
     </div>
   </div>

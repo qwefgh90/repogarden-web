@@ -1,9 +1,11 @@
 import { Headers, Http } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Repository } from './class/repository';
 import { Commit } from './class/commit';
 import { Branch } from './class/branch';
 import { GitNode } from './class/git-node';
+import { AuthService } from './auth.service';
 import { TypoInfo } from './class/typo-info';
 import { REPOSITORIES } from './mock/mock-repositories';
 import { Observable } from 'rxjs/Observable';
@@ -14,25 +16,39 @@ import * as meta from './meta/index'
 @Injectable()
 export class GithubService {
     private repositoriesUrl = meta.repositoriesUrl;
-    constructor(private http: Http) { }
+    constructor(private authService: AuthService, private http: Http, private router: Router, ) { }
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
     getRepositories(): Promise<Repository[]> {
-        console.log('go repo');
         return this.http.get(this.repositoriesUrl, { withCredentials: true })
-            .map(response => response.json() as Repository[])
-            .toPromise();
+            .toPromise()
+            .then(response => response.json() as Repository[]
+            , response => {
+                if (response.status == '401')
+                    this.authService.logout();
+            });
     }
 
-    getBranches(repository: Repository): Promise<Array<Branch>> {
-        return this.http.get(meta.branchesUrl(repository.owner, repository.name))
-            .map(response => response.json() as Array<Branch>).toPromise();
+    getBranches(repository: Repository): Observable<Array<Branch>> {
+        let observable = this.http.get(meta.branchesUrl(repository.owner, repository.name), { withCredentials: true })
+        return observable.do(response => {
+            if (response.status == 401)
+                this.authService.logout();
+        }).map(response => response.json() as Array<Branch>);
     }
 
-    getTypoStats(repository: Repository, branch: Branch, offset: number, size: number): Promise<Array<Commit>> {
-        return this.http.get(meta.typoStatsUrl(repository.owner, repository.name, branch.name))
-            .map(response => response.json() as Array<Commit>).toPromise();
+    getTypoStats(repository: Repository, branch: Branch, offset: number, size: number): Observable<Array<Commit>> {
+        let observable = this.http.get(meta.typoStatsUrl(repository.owner, repository.name, branch.name), { withCredentials: true });
+        return observable.do(response => {
+            if (response.status == 401)
+                this.authService.logout();
+        }).map(response => response.json() as Array<Commit>);
+    }
+
+    buildTypoStats(repository: Repository, branch: Branch): Promise<Object> {
+        return this.http.post(meta.typoStatsUrl(repository.owner, repository.name, branch.name), "")
+            .map(response => response.json() as Object).toPromise();
     }
 
     getTree(repository: Repository, branch: Branch, sha: string): Promise<GitNode> {

@@ -50,6 +50,7 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         if (this.branch != undefined) {
+            
             if (this.branch.commits == undefined) {
                 if (this.commitsSubscription != undefined)
                     this.commitsSubscription.unsubscribe();

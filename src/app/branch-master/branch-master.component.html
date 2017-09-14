@@ -1,7 +1,7 @@
 <div style="margin-bottom:16px;">
   <span class="h3">{{repository?.name}}</span>
   <div style="float:right">
-    <div class="btn-group" dropdown>
+    <div class="btn-group" dropdown *ngIf="repository?.branches != undefined && repository?.branches?.length > 0">
       <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
         {{selectedBranch?.name}}<span class="caret"></span>
       </button>
@@ -10,20 +10,26 @@
       </ul>
     </div>
     &nbsp;
-    <a href="{{repository?.getRepoUrl(selectedId)}}" target="_blank"><img src="assets/GitHub-Mark-32px.png"/></a>
+    <a href="{{repository?.htmlUrl}}" target="_blank"><img src="assets/GitHub-Mark-32px.png"/></a>
   </div>
 </div>
-<tabset>
-  <tab [active]="activeTab == 1" (select)="selectTab('Cve')">
-    <template tabHeading>
-      CVEs <small></small>
-    </template>
-    <app-repository-cve-detail [selectedRepository]="repository" [selectedId]="id" [selectedBranch]="selectedBranch"></app-repository-cve-detail>
-  </tab>
-  <tab [active]="activeTab == 2" (select)="selectTab('Typo')">
-    <template tabHeading>
-      Typos <small></small>
-    </template>
-    <app-repository-typo-detail [selectedRepository]="repository" [selectedId]="id" [selectedBranch]="selectedBranch"></app-repository-typo-detail>
-  </tab>
-</tabset>
+<div *ngIf="repository?.branches?.length > 0">
+  <tabset>
+    <tab [active]="activeTab == 1" (select)="selectTab('Cve')">
+      <template tabHeading>
+        CVEs <small></small>
+      </template>
+      <app-repository-cve-detail [selectedRepository]="repository" [selectedId]="id" [selectedBranch]="selectedBranch"></app-repository-cve-detail>
+    </tab>
+    <tab [active]="activeTab == 2" (select)="selectTab('Typo')">
+      <template tabHeading>
+        Typos <small></small>
+      </template>
+      <app-repository-typo-detail [selectedRepository]="repository" [selectedId]="id" [selectedBranch]="selectedBranch"></app-repository-typo-detail>
+    </tab>
+  </tabset>
+</div>
+<div *ngIf="repository?.branches?.length == 0">
+  <hr/>
+  <h4>&nbsp;There are no branches in this repository.</h4>
+</div>

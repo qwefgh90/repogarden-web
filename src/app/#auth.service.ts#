@@ -33,7 +33,7 @@ export class AuthService {
             let state = initialVector.state;
             let client_id = initialVector.client_id;
             console.log('cli: ' + client_id);
-            let redirect_uri = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/callback?returnUrl=${returnUrl.split('?')[0]}`;
+            let redirect_uri = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/callback?returnUrl=${returnUrl}`;
             window.location.href = `https://github.com/login/oauth/authorize?state=${state}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
         })
     }

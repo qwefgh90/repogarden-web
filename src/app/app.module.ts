@@ -44,6 +44,8 @@ import { HighlightTextComponent } from './highlight-text/highlight-text.componen
 
 declare const alertify: any;
 
+export let isDev = isDevMode();
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -106,7 +108,7 @@ declare const alertify: any;
         ProfileService,
         TreeService,
         // providers used to create fake backend
-        (!isDevMode() ? fakeBackendProvider : apiBackendProvider),
+        apiBackendProvider, //(!isDev ? fakeBackendProvider : apiBackendProvider),
         MockBackend,
         BaseRequestOptions
     ],
