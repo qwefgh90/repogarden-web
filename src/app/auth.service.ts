@@ -27,20 +27,23 @@ export class AuthService {
 
     private sessionCreated: boolean = false;
 
-    requestUserIdentity(): void {
-        let returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
+    requestUserIdentity(returnPath?: string): void {
+        let returnUrl = returnPath != undefined ? returnPath : this.activatedRoute.snapshot.queryParams['returnUrl'];
         this.http.get('/login/client').map(response => <InitialVector>response.json()).toPromise().then(initialVector => {
             let state = initialVector.state;
             let client_id = initialVector.client_id;
             console.log('cli: ' + client_id);
             let redirect_uri = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/callback?returnUrl=${returnUrl.split('?')[0]}`;
             window.location.href = `https://github.com/login/oauth/authorize?state=${state}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
-        })
+        }, (response) => {
+            console.error('A error occurs. ' + response);
+            this.router.navigate(['/']);
+        });
     }
 
-    login(code: string, state: string): Observable<void> {
-        var observable = this.http.post('/login', { code: code, state: state }, { withCredentials: true });
-        return observable.map(response => {
+    login(code: string, state: string): void {
+        var promise = this.http.post('/login', { code: code, state: state }, { withCredentials: true }).toPromise();
+        promise.then(response => {
             let user = response.json();
             if (user) {
                 let userInfo = new UserInfo(user.id, user.username, user.login,
@@ -53,11 +56,16 @@ export class AuthService {
                 else
                     this.router.navigate([returnUrl], {});
             }
+        }).catch((response) => {
+            console.error('A error occurs. ' + response);
+            this.router.navigate(['/']);
         });
     }
 
-    logout(): void {
+    logout(retry?: boolean): void {
         localStorage.clear();
+        if (retry)
+            this.router.navigate([this.router.url], { queryParams: { retry: 1 } });
         location.reload();
     }
 

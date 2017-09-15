@@ -30,10 +30,8 @@ export class HomeComponent implements OnInit {
     }
 
     private bindRepositories() {
-        this.githubService.getRepositories().then(repos => {
+        this.githubService.getRepositories().subscribe(repos => {
             this.repositories = repos;
-        }).catch(ex => {
-            console.error(ex);
         });
     }
 

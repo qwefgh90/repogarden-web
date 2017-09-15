@@ -67,8 +67,8 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         this.selectedNodeMap[commit.sha] = node;
     }
 
-    loadTypos(commit: Commit, targetTree: GitNode): Promise<GitNode> {
-        return this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).then(typoInfoArray => {
+    loadTypos(commit: Commit, targetTree: GitNode): Observable<GitNode> {
+        return this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).map(typoInfoArray => {
             let typoTable = typoInfoArray.reduce((p, v, index, arr) => {
                 p.set(v.treeSha, v);
                 return p;
@@ -79,8 +79,8 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
     }
 
     loadTree(commit: Commit) {
-        this.githubService.getTree(this.repository, this.branch, commit.sha).then(tree => {
-            this.loadTypos(commit, tree).then((tree) => {
+        this.githubService.getTree(this.repository, this.branch, commit.sha).subscribe(tree => {
+            this.loadTypos(commit, tree).subscribe((tree) => {
                 commit.tree = tree;
                 console.info('A array of TypoInfo is bound in ' + commit.sha);
             });

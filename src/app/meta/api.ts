@@ -1,5 +1,9 @@
 export const repositoriesUrl = '/api/repositories';
 
+export function repositoryUrl(owner: string, repoName: string): string {
+    return `/api/repositories/${owner}/${repoName}`;
+}
+
 export function branchesUrl(owner: string, repoName: string): string {
     return `/api/repositories/${owner}/${repoName}/branches`;
 }

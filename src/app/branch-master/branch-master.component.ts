@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, NavigationEnd } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toPromise';
 import { GithubService } from '../repository.service';
@@ -36,6 +36,11 @@ export class BranchMasterComponent implements OnInit, OnChanges {
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private githubService: GithubService) {
         profileService.getObservableUserInfo().subscribe(userInfo => {
             this.userInfo = userInfo;
+        });
+        router.events.subscribe((val) => {
+            if (val instanceof NavigationEnd) {
+                window.scrollTo(0, 0);
+            }
         });
     }
 

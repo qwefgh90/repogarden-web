@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
         this.route.queryParams.subscribe(params => {
             let code = params['code'];
             let state = params['state'];
-            this.authService.login(code, state).subscribe();
+            this.authService.login(code, state);
         })
     }
 

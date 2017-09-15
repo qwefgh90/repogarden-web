@@ -11,7 +11,11 @@ export class AuthGuardService implements CanActivate {
             return true;
         }
 
-        this.router.navigate(['/welcome'], { queryParams: { returnUrl: state.url } });
+        let retry = route.queryParams['retry'];
+        if (retry) {
+            this.authService.requestUserIdentity(state.url);
+        } else
+            this.router.navigate(['/welcome'], { queryParams: { returnUrl: state.url } });
         return false;
     }
 }

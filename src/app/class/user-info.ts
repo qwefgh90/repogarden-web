@@ -5,6 +5,6 @@ export class UserInfo {
         return `${this.htmlUrl}`;
     };
     public getProfilePath(): string {
-        return `/profile/${this.id}`;
+        return `/profile/${this.login}`;
     };
 }

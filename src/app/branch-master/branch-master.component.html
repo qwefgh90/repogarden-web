@@ -1,5 +1,5 @@
 <div style="margin-bottom:16px;">
-  <span class="h3">{{repository?.name}}</span>
+  <span class="h3" >{{repository?.name}}</span>
   <div style="float:right">
     <div class="btn-group" dropdown *ngIf="repository?.branches != undefined && repository?.branches?.length > 0">
       <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
@@ -12,6 +12,10 @@
     &nbsp;
     <a href="{{repository?.htmlUrl}}" target="_blank"><img src="assets/GitHub-Mark-32px.png"/></a>
   </div>
+</div>
+<div *ngIf="repository?.branches == undefined" style="text-align: center">
+  <i class="fa fa-spinner fa-spin fa-5x fa-fw"></i><br>
+  <i class="fa-2x fa-fw">Loading branches...</i>
 </div>
 <div *ngIf="repository?.branches?.length > 0">
   <tabset>

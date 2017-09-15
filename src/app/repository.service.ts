@@ -20,50 +20,132 @@ export class GithubService {
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
 
-    getRepositories(): Promise<Repository[]> {
+    getRepositories(): Observable<Repository[]> {
         return this.http.get(this.repositoriesUrl, { withCredentials: true })
-            .toPromise()
-            .then(response => response.json() as Repository[]
-            , response => {
-                if (response.status == '401')
-                    this.authService.logout();
+            .map(response => {
+                let json = response.json() as Array<Object>;
+                return json.map((v, i, a) => Repository.createInstance(v));
+
+            })// as Repository[])
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
             });
     }
 
     getBranches(repository: Repository): Observable<Array<Branch>> {
-        let observable = this.http.get(meta.branchesUrl(repository.owner, repository.name), { withCredentials: true })
-        return observable.do(response => {
-            if (response.status == 401)
-                this.authService.logout();
-        }).map(response => response.json() as Array<Branch>);
+        return this.http.get(meta.branchesUrl(repository.owner, repository.name), { withCredentials: true })
+            .map(response => response.json() as Array<Branch>)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            });
     }
 
     getTypoStats(repository: Repository, branch: Branch, offset: number, size: number): Observable<Array<Commit>> {
-        let observable = this.http.get(meta.typoStatsUrl(repository.owner, repository.name, branch.name), { withCredentials: true });
-        return observable.do(response => {
-            if (response.status == 401)
-                this.authService.logout();
-        }).map(response => response.json() as Array<Commit>);
+        return this.http.get(meta.typoStatsUrl(repository.owner, repository.name, branch.name), { withCredentials: true })
+            .map(response => response.json() as Array<Commit>)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            });
     }
 
-    buildTypoStats(repository: Repository, branch: Branch): Promise<Object> {
+    buildTypoStats(repository: Repository, branch: Branch): Observable<Object> {
         return this.http.post(meta.typoStatsUrl(repository.owner, repository.name, branch.name), "")
-            .map(response => response.json() as Object).toPromise();
+            .map(response => response.json() as Object)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            });
     }
 
-    getTree(repository: Repository, branch: Branch, sha: string): Promise<GitNode> {
+    getTree(repository: Repository, branch: Branch, sha: string): Observable<GitNode> {
         return this.http.get(meta.treeUrl(repository.owner, repository.name, sha))
-            .map(response => response.json() as GitNode).toPromise();
+            .map(response => response.json() as GitNode)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            });
     }
 
-    getTypos(repository: Repository, branch: Branch, typoStatId: number): Promise<Array<TypoInfo>> {
+    getTypos(repository: Repository, branch: Branch, typoStatId: number): Observable<Array<TypoInfo>> {
         return this.http.get(meta.typosUrl(repository.owner, repository.name, branch.name, typoStatId))
-            .map(response => response.json() as Array<TypoInfo>).toPromise();
+            .map(response => response.json() as Array<TypoInfo>)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            });
     }
 
-    updateActivated(userName: string, repositoryName: string, activated: boolean): Promise<boolean> {
-        let requestUrl = `api/repositories/${userName}/${repositoryName}`;
-        return this.http.put(requestUrl, { activated: activated }).map(response => response.ok).toPromise();
+    updateActivated(repository: Repository, activated: boolean): Promise<boolean> {
+        return this.http.put(meta.repositoryUrl(repository.owner, repository.name), { activated: activated }, { withCredentials: true }).map(response => response.ok).toPromise();
     }
 
     disableTypoComponent(owner: string, repoName: string, branchName: string, typoStatId: number, typoId: number, typoCompId: number): Promise<boolean> {

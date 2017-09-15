@@ -16,10 +16,10 @@
           </div>
         </div>
         <div class="row repository-item" *ngFor="let repository of repositories">
-          <a class="h4" target="_blank" href="{{repository.accessLink}}">{{userInfo.id}}/{{repository.name}}</a>
+          <a class="h4" target="_blank" href="{{repository.htmlUrl}}">{{repository.owner}}/{{repository.name}}</a>
           <div class="btn-group" style="float:right">
-            <label class="btn btn-sm btn-primary" [(ngModel)]="repository.activated" btnRadio="on" [debounce]="500" (onDebounce)="radioClick(repository)">On</label>
-            <label class="btn btn-sm btn-primary" [(ngModel)]="repository.activated" btnRadio="off" >Off</label>
+            <label class="btn btn-sm btn-primary" [(ngModel)]="repository.activatedRadio" btnRadio="on" [debounce]="500" (onDebounce)="radioClick(repository)">On</label>
+            <label class="btn btn-sm btn-primary" [(ngModel)]="repository.activatedRadio" btnRadio="off" >Off</label>
           </div>
         </div>
       </div>

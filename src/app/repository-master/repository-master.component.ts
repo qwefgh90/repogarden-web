@@ -35,7 +35,7 @@ export class RepositoryMasterComponent implements OnInit {
     selectedBranch: Branch;
 
     constructor(private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private githubService: GithubService) {
-        githubService.getRepositories().then(repos => {
+        githubService.getRepositories().subscribe(repos => {
             this.repositories = repos;
             this.route.params.subscribe(params => {
                 this.selectedId = params['id'];

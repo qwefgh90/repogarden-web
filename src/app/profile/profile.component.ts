@@ -29,15 +29,15 @@ export class ProfileComponent implements OnInit {
     }
 
     private getRepositories() {
-        this.repositoryService.getRepositories().then(repositories => {
-            this.activeCount = repositories.filter(repo => repo.activated == "on").length;
+        this.repositoryService.getRepositories().subscribe(repositories => {
+            this.activeCount = repositories.filter(repo => repo.activatedRadio == "on").length;
             this.repositories = repositories;
         });
     }
 
     radioClick(repo) {
         console.log(repo);
-        this.repositoryService.updateActivated(this.userInfo.id, repo.name, repo.activated).then(isSuccess => {
+        this.repositoryService.updateActivated(repo, repo.getActivated()).then(isSuccess => {
             //regardless of success or fail, fetch repositories and binding it.
             this.getRepositories();
             if (!isSuccess)

@@ -11,7 +11,7 @@ import { ProfileService } from './profile.service';
 })
 export class AppComponent {
     constructor(private authService: AuthService, private profileService: ProfileService) {
-        this.profileService.getObservableUserInfo().map(userInfo => userInfo.id).subscribe(id => {
+        this.profileService.getObservableUserInfo().map(userInfo => userInfo.login).subscribe(id => {
             this.userId = id;
         });
     }
