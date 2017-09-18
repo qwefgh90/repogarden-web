@@ -15,7 +15,7 @@ export class CallbackComponent implements OnInit {
         this.code = params['code'];
         this.state = params['state'];
         console.info(router.url);
-        this.authService.login(this.code, this.state).subscribe();
+        this.authService.login(this.code, this.state);
     }
 
     ngOnInit() {

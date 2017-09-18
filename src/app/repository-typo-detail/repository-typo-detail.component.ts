@@ -88,6 +88,15 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         console.info(`tree is loaded in ${commit.sha}.`);
     }
 
+    find() {
+        let promise = this.githubService.buildTypoStats(this.repository, this.branch);
+        promise.then(obj => {
+            let id = obj['id'];
+            console.info('id: ' + id);
+        });
+
+    }
+
     getTypoCount(commit: Commit): number {
         if (commit.tree != undefined)
             return dfs(commit.tree, new TypoCounter());

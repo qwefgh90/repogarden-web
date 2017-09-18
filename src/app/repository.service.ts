@@ -84,8 +84,8 @@ export class GithubService {
             });
     }
 
-    buildTypoStats(repository: Repository, branch: Branch): Observable<Object> {
-        return this.http.post(meta.typoStatsUrl(repository.owner, repository.name, branch.name), "")
+    buildTypoStats(repository: Repository, branch: Branch): Promise<Object> {
+        return this.http.post(meta.typoStatsUrl(repository.owner, repository.name, branch.name), "", { withCredentials: true })
             .map(response => response.json() as Object)
             .catch((err, caught) => {
                 if (err.error instanceof Error) {
@@ -101,11 +101,12 @@ export class GithubService {
                     console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
                 }
                 return caught;
-            });
+            })
+            .toPromise();
     }
 
     getTree(repository: Repository, branch: Branch, sha: string): Observable<GitNode> {
-        return this.http.get(meta.treeUrl(repository.owner, repository.name, sha))
+        return this.http.get(meta.treeUrl(repository.owner, repository.name, sha), { withCredentials: true })
             .map(response => response.json() as GitNode)
             .catch((err, caught) => {
                 if (err.error instanceof Error) {
@@ -125,7 +126,7 @@ export class GithubService {
     }
 
     getTypos(repository: Repository, branch: Branch, typoStatId: number): Observable<Array<TypoInfo>> {
-        return this.http.get(meta.typosUrl(repository.owner, repository.name, branch.name, typoStatId))
+        return this.http.get(meta.typosUrl(repository.owner, repository.name, branch.name, typoStatId), { withCredentials: true })
             .map(response => response.json() as Array<TypoInfo>)
             .catch((err, caught) => {
                 if (err.error instanceof Error) {
