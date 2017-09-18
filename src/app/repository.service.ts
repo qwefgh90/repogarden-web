@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Repository } from './class/repository';
 import { Commit } from './class/commit';
 import { Branch } from './class/branch';
-import { GitNode } from './class/git-node';
+import { GitNode, convertTreeEntryToGitNode, TreeEntryEx } from './class/git-node';
 import { AuthService } from './auth.service';
 import { TypoInfo } from './class/typo-info';
 import { REPOSITORIES } from './mock/mock-repositories';
@@ -107,7 +107,8 @@ export class GithubService {
 
     getTree(repository: Repository, branch: Branch, sha: string): Observable<GitNode> {
         return this.http.get(meta.treeUrl(repository.owner, repository.name, sha), { withCredentials: true })
-            .map(response => response.json() as GitNode)
+            .map(response => response.json() as Array<TreeEntryEx>)
+            .map(arr => convertTreeEntryToGitNode(arr))
             .catch((err, caught) => {
                 if (err.error instanceof Error) {
                     // A client-side or network error occurred. Handle it accordingly.
@@ -125,7 +126,7 @@ export class GithubService {
             });
     }
 
-    getTypos(repository: Repository, branch: Branch, typoStatId: number): Observable<Array<TypoInfo>> {
+    getTypos(repository: Repository, branch: Branch, typoStatId: number): Promise<Array<TypoInfo>> {
         return this.http.get(meta.typosUrl(repository.owner, repository.name, branch.name, typoStatId), { withCredentials: true })
             .map(response => response.json() as Array<TypoInfo>)
             .catch((err, caught) => {
@@ -136,13 +137,15 @@ export class GithubService {
                     if (err.status == '401') {
                         this.authService.logout(true);
                         throw 'Logout: ' + err;
+                    } else if (err.status == '400') {
+                        throw 'bad request';
                     }
                     // The backend returned an unsuccessful response code.
                     // The response body may contain clues as to what went wrong,
                     console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
                 }
                 return caught;
-            });
+            }).toPromise();
     }
 
     updateActivated(repository: Repository, activated: boolean): Promise<boolean> {

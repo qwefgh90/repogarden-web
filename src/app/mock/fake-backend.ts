@@ -1,6 +1,6 @@
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHRBackend, RequestOptions, Headers } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { REPOSITORIES, BRANCHES1, COMMITS1 } from '../mock/mock-repositories';
+import { REPOSITORIES, BRANCHES1, COMMITS1, COMMITS2 } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
 import { tree2 } from '../mock/mock-git-tree';
 import { typoInfo1, typoInfo2 } from '../mock/mock-typo-info';
@@ -32,10 +32,19 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 return;
             }
 
+            if (connection.request.url.split('?')[0].endsWith('/typoStats') && connection.request.method === RequestMethod.Post) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: { id: 1 }
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
             if (connection.request.url.split('?')[0].endsWith('/typoStats') && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
-                    body: COMMITS1
+                    body: (parseInt((Math.random() * 100).toString()) % 2) == 1 ? COMMITS1 : COMMITS2
                 })));
                 console.info(JSON.stringify(connection.request));
                 return;

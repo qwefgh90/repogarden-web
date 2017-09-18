@@ -7,17 +7,20 @@ import { GitNode, TypoCounter, dfs, TypoInfoBinder } from '../class/git-node';
 import { TypoInfo } from '../class/typo-info';
 import { tree2 as mockTree } from '../mock/mock-git-tree'
 import { TreeService } from '../tree.service';
+import { ApiBackendService } from '../api-backend.service';
 import { GithubService } from '../repository.service';
 import { HighlightTextComponent } from '../highlight-text/highlight-text.component'
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { $WebSocket, WebSocketSendMode } from 'angular2-websocket/angular2-websocket';
 
 declare const alertify: any;
 
 @Component({
     selector: 'app-repository-typo-detail',
     templateUrl: './repository-typo-detail.component.html',
-    styleUrls: ['./repository-typo-detail.component.css']
+    styleUrls: ['./repository-typo-detail.component.css'],
+    providers: [ApiBackendService]
 })
 export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
@@ -43,7 +46,7 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     }
 
-    constructor(public githubService: GithubService, public treeService: TreeService) { }
+    constructor(public githubService: GithubService, public treeService: TreeService, public backendService: ApiBackendService) { }
 
     ngOnInit() {
     }
@@ -67,8 +70,8 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         this.selectedNodeMap[commit.sha] = node;
     }
 
-    loadTypos(commit: Commit, targetTree: GitNode): Observable<GitNode> {
-        return this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).map(typoInfoArray => {
+    loadTypos(commit: Commit, targetTree: GitNode): Promise<GitNode> {
+        return this.githubService.getTypos(this.repository, this.branch, commit.typoStatId).then(typoInfoArray => {
             let typoTable = typoInfoArray.reduce((p, v, index, arr) => {
                 p.set(v.treeSha, v);
                 return p;
@@ -80,12 +83,13 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     loadTree(commit: Commit) {
         this.githubService.getTree(this.repository, this.branch, commit.sha).subscribe(tree => {
-            this.loadTypos(commit, tree).subscribe((tree) => {
+            console.info('load tree');
+            this.loadTypos(commit, tree).then((tree) => {
                 commit.tree = tree;
                 console.info('A array of TypoInfo is bound in ' + commit.sha);
             });
+            console.info(`tree is loaded in ${commit.sha}.`);
         });
-        console.info(`tree is loaded in ${commit.sha}.`);
     }
 
     find() {
@@ -93,15 +97,22 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         promise.then(obj => {
             let id = obj['id'];
             console.info('id: ' + id);
+            let ws = new $WebSocket(this.backendService.frontPart());
+            ws.onMessage(
+                (msg: MessageEvent) => {
+                    console.log("onMessage ", msg.data);
+                },
+                { autoApply: false }
+            );
         });
 
     }
 
     getTypoCount(commit: Commit): number {
-        if (commit.tree != undefined)
-            return dfs(commit.tree, new TypoCounter());
-        else
-            return undefined;
+        //        if (commit.tree != undefined)
+        //            return dfs(commit.tree, new TypoCounter());
+        //        else
+        return undefined;
     }
 
     removeTypoComp(commit: Commit, typoId: number, typoCompId: number) {

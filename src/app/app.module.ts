@@ -108,7 +108,8 @@ export let isDev = isDevMode();
         ProfileService,
         TreeService,
         // providers used to create fake backend
-        apiBackendProvider, //(!isDev ? fakeBackendProvider : apiBackendProvider),
+        apiBackendProvider,
+        //fakeBackendProvider,
         MockBackend,
         BaseRequestOptions
     ],

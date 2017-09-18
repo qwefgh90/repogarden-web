@@ -42,7 +42,8 @@ export function dfs<T>(tree: GitNode, visitor: Visitor<T, GitNode>): T {
     function go(tree: GitNode) {
         let stack = [];
         visitor.visit(tree, stack);
-        tree.children.forEach(c => go(c));
+        if (tree.children != undefined)
+            tree.children.forEach(c => go(c));
     };
     go(tree);
     return visitor.acc;
