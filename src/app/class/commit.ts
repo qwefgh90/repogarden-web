@@ -10,6 +10,7 @@ export interface Commit {
     committerEmail: string;
     committerName: string;
     url: string;
+    status: string;
     typoStatId?: number;
     cveStatId?: number;
     tree?: GitNode;

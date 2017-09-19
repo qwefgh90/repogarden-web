@@ -92,6 +92,21 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         });
     }
 
+    retry(commitSha: string) {
+        let promise = this.githubService.buildTypoStatsWithCommit(this.repository, this.branch, commitSha);
+        promise.then(obj => {
+            let id = obj['id'];
+            console.info('id: ' + id);
+            let ws = new $WebSocket(this.backendService.frontPart());
+            ws.onMessage(
+                (msg: MessageEvent) => {
+                    console.log("onMessage ", msg.data);
+                },
+                { autoApply: false }
+            );
+        });
+    }
+
     find() {
         let promise = this.githubService.buildTypoStats(this.repository, this.branch);
         promise.then(obj => {

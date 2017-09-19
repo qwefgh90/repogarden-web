@@ -25,12 +25,12 @@ export class GithubService {
             .map(response => {
                 let json = response.json() as Array<Object>;
                 return json.map((v, i, a) => Repository.createInstance(v));
-
             })// as Repository[])
             .catch((err, caught) => {
                 if (err.error instanceof Error) {
                     // A client-side or network error occurred. Handle it accordingly.
                     console.log('An error occurred:', err.error.message);
+                    throw err;
                 } else {
                     if (err.status == '401') {
                         this.authService.logout(true);
@@ -82,6 +82,27 @@ export class GithubService {
                 }
                 return caught;
             });
+    }
+
+    buildTypoStatsWithCommit(repository: Repository, branch: Branch, commitSha: string): Promise<Object> {
+        return this.http.post(meta.typoStatsUrl(repository.owner, repository.name, branch.name), { commitSha: commitSha }, { withCredentials: true })
+            .map(response => response.json() as Object)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            })
+            .toPromise();
     }
 
     buildTypoStats(repository: Repository, branch: Branch): Promise<Object> {
@@ -154,6 +175,21 @@ export class GithubService {
 
     disableTypoComponent(owner: string, repoName: string, branchName: string, typoStatId: number, typoId: number, typoCompId: number, disabled: boolean): Promise<boolean> {
         return this.http.put(meta.typoCompUrl(owner, repoName, branchName, typoStatId, typoId, typoCompId), { disabled: disabled }, { withCredentials: true })
-            .map(response => response.status == 200).toPromise();
+            .map(response => response.status == 200)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            }).toPromise();
     }
 }
