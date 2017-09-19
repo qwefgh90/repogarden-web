@@ -116,7 +116,7 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
     }
 
     removeTypoComp(commit: Commit, typoId: number, typoCompId: number) {
-        this.githubService.disableTypoComponent(this.repository.owner, this.repository.name, this.branch.name, commit.typoStatId, typoId, typoCompId).then(b => {
+        this.githubService.disableTypoComponent(this.repository.owner, this.repository.name, this.branch.name, commit.typoStatId, typoId, typoCompId, true).then(b => {
             let index = this.selectedNodeMap[commit.sha].typoInfo.offsetTuple.findIndex((comp) => { return comp.id == typoCompId });
             if (index != -1) {
                 this.selectedNodeMap[commit.sha].typoInfo.offsetTuple.splice(index, 1)

@@ -152,8 +152,8 @@ export class GithubService {
         return this.http.put(meta.repositoryUrl(repository.owner, repository.name), { activated: activated }, { withCredentials: true }).map(response => response.ok).toPromise();
     }
 
-    disableTypoComponent(owner: string, repoName: string, branchName: string, typoStatId: number, typoId: number, typoCompId: number): Promise<boolean> {
-        return this.http.delete(meta.typoCompUrl(owner, repoName, branchName, typoStatId, typoId, typoCompId))
+    disableTypoComponent(owner: string, repoName: string, branchName: string, typoStatId: number, typoId: number, typoCompId: number, disabled: boolean): Promise<boolean> {
+        return this.http.put(meta.typoCompUrl(owner, repoName, branchName, typoStatId, typoId, typoCompId), { disabled: disabled }, { withCredentials: true })
             .map(response => response.status == 200).toPromise();
     }
 }

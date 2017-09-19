@@ -75,7 +75,7 @@ export class HighlightTextComponent implements OnInit, OnChanges {
         let tupleArray = this.getTypoTupleForAllScope(typoInfo.offsetTuple, typoInfo.body.length);
         let body = typoInfo.body;
         let formattingArray = tupleArray.map((v, index, a) => {
-            if (v.id == undefined)
+            if (v.id == undefined || v.disabled == true)
                 return this.encodeHtml(body.substr(v.offset, v.length));
             else
                 return this.applyFormat(this.encodeHtml(body.substr(v.offset, v.length)), v.id.toString(), v);
