@@ -53,15 +53,14 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         if (this.branch != undefined) {
-            if (this.branch.commits == undefined) {
-                if (this.commitsSubscription != undefined)
-                    this.commitsSubscription.unsubscribe();
-                this.commitsSubscription = this.githubService.getTypoStats(this.repository, this.branch, 0, 10).subscribe(commits => {
-                    this.branch.commits = commits;
-                    if (this.branch.commits.length > 0)
-                        this.loadTree(this.branch.commits[0]);
-                });
-            }
+            if (this.commitsSubscription != undefined)
+                this.commitsSubscription.unsubscribe();
+            this.commitsSubscription = this.githubService.getTypoStats(this.repository, this.branch, 0, 10).subscribe(commits => {
+                this.branch.commits = commits;
+                if (this.branch.commits.length > 0)
+                    this.loadTree(this.branch.commits[0]);
+            });
+
         }
     }
 
@@ -97,10 +96,14 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         promise.then(obj => {
             let id = obj['id'];
             console.info('id: ' + id);
-            let ws = new $WebSocket(this.backendService.frontPart());
+            let ws = new $WebSocket(this.backendService.webSocketUrl(id));
             ws.onMessage(
                 (msg: MessageEvent) => {
                     console.log("onMessage ", msg.data);
+                    let data = JSON.parse(msg.data)
+                    if (data.status != undefined) {
+                        this.ngOnChanges();
+                    }
                 },
                 { autoApply: false }
             );
@@ -112,10 +115,14 @@ export class RepositoryTypoDetailComponent implements OnInit, OnChanges {
         promise.then(obj => {
             let id = obj['id'];
             console.info('id: ' + id);
-            let ws = new $WebSocket(this.backendService.frontPart());
+            let ws = new $WebSocket(this.backendService.webSocketUrl(id));
             ws.onMessage(
                 (msg: MessageEvent) => {
                     console.log("onMessage ", msg.data);
+                    let data = JSON.parse(msg.data)
+                    if (data.status != undefined) {
+                        this.ngOnChanges();
+                    }
                 },
                 { autoApply: false }
             );

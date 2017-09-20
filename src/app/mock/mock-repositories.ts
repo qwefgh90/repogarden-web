@@ -13,6 +13,7 @@ const commit1: Commit =
         committerEmail: 'qwefgh90',
         committerName: 'leadersama',
         url: 'url',
+        status: 'FINISHED',
         typoStatId: 1234,
     };
 
@@ -24,6 +25,7 @@ const commit2: Commit =
         committerEmail: 'qwefgh90',
         committerName: 'leadersama',
         url: 'url',
+        status: 'FINISHED',
         typoStatId: 2345,
     };
 
@@ -35,6 +37,7 @@ const commit3: Commit =
         committerEmail: 'qwefgh90',
         committerName: 'leadersama',
         url: 'url',
+        status: 'FAILED',
         typoStatId: 3456,
     }
 export const COMMITS1 = [commit1, commit2, commit3];

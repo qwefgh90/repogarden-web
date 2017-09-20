@@ -9,8 +9,13 @@ export class ApiBackendService extends XHRBackend {
         }
         return super.createConnection(request);
     }
+
     frontPart(): string {
         return 'http://localhost:9000';
+    }
+
+    webSocketUrl(channelId: string): string {
+        return `ws://localhost:9000/ws?ch=${channelId}`;
     }
 }
 
