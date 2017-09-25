@@ -1,4 +1,4 @@
-import { Cve } from '../class/cve'
+import { Cve, VulnerablePart, VulnerableResult, JavaModule } from '../class/cve'
 
 export const cve1 = new Cve('2017-3159', "Apache Camel's Snakeyaml unmarshalling operation is vulnerable to Remote Code Execution attacks", "Apache Camel's camel-snakeyaml component is vulnerable to Java object de-serialization vulnerability. De-serializing untrusted data can lead to security flaws.", ["http://camel.apache.org/security-advisories.data/CVE-2017-3159.txt.asc?version=1&modificationDate=1486565167000&api=v2", "https://www.cvedetails.com/cve/CVE-2017-3159/"]);
 

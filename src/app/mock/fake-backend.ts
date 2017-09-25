@@ -2,7 +2,7 @@ import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHR
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { REPOSITORIES, BRANCHES1, COMMITS1, COMMITS2 } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
-import { tree2 } from '../mock/mock-git-tree';
+import { tree3 } from '../mock/mock-git-tree';
 import { typoInfo1, typoInfo2 } from '../mock/mock-typo-info';
 import { Repository } from '../class/repository';
 
@@ -61,7 +61,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
             if (connection.request.url.split('?')[0].match(/trees\\?/) && connection.request.method === RequestMethod.Get) {
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
-                    body: tree2
+                    body: tree3
                 })));
                 console.info(JSON.stringify(connection.request));
                 return;
@@ -88,7 +88,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 if (paramsMap['owner'] == 'qwefgh90') {
                     connection.mockRespond(new Response(new ResponseOptions({
                         status: 200,
-                        body: tree2
+                        body: tree3
                     })));
                 } else {
                     connection.mockRespond(new Response(new ResponseOptions({
