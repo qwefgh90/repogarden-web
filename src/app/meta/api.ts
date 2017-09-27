@@ -12,6 +12,10 @@ export function typoStatsUrl(owner: string, repoName: string, branchName: string
     return `/api/repositories/${owner}/${repoName}/branches/${branchName}/typoStats`;
 };
 
+export function cveStatsUrl(owner: string, repoName: string, branchName: string): string {
+    return `/api/repositories/${owner}/${repoName}/branches/${branchName}/cveStats`;
+};
+
 export function treeUrl(owner: string, repoName: string, sha: string): string {
     return `/api/repositories/${owner}/${repoName}/trees?commitSha=${sha}`;
 };

@@ -38,8 +38,21 @@ const commit3: Commit =
         status: 'FAILED',
         typoStatId: 3456,
     }
+
+const commit4: Commit =
+    {
+        sha: 'tl24k5t24',
+        message: 'other commit',
+        date: '20170505',
+        committerEmail: 'qwefgh90',
+        committerName: 'leadersama',
+        url: 'url',
+        status: 'SUCCESS'
+    }
+
 export const COMMITS1 = [commit1, commit2, commit3];
 export const COMMITS2 = [];
+export const CVE_COMMITS1 = [commit4];
 
 export const BRANCHES1: Branch[] = [new Branch("master", undefined), new Branch("develop", undefined), new Branch("feature-2", undefined)]
 

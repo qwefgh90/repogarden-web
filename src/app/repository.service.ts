@@ -84,6 +84,26 @@ export class GithubService {
             });
     }
 
+    getCveStats(repository: Repository, branch: Branch, offset: number, size: number): Observable<Array<Commit>> {
+        return this.http.get(meta.cveStatsUrl(repository.owner, repository.name, branch.name), { withCredentials: true })
+            .map(response => response.json() as Array<Commit>)
+            .catch((err, caught) => {
+                if (err.error instanceof Error) {
+                    // A client-side or network error occurred. Handle it accordingly.
+                    console.log('An error occurred:', err.error.message);
+                } else {
+                    if (err.status == '401') {
+                        this.authService.logout(true);
+                        throw 'Logout: ' + err;
+                    }
+                    // The backend returned an unsuccessful response code.
+                    // The response body may contain clues as to what went wrong,
+                    console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+                }
+                return caught;
+            });
+    }
+
     buildTypoStatsWithCommit(repository: Repository, branch: Branch, commitSha: string): Promise<Object> {
         return this.http.post(meta.typoStatsUrl(repository.owner, repository.name, branch.name), { commitSha: commitSha }, { withCredentials: true })
             .map(response => response.json() as Object)

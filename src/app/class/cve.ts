@@ -1,9 +1,9 @@
 export class VulnerableResult {
-    constructor(vulnerableList: Array<VulnerablePart>) { }
+    constructor(readonly vulnerableList: Array<VulnerablePart>, readonly path: String) { }
 };
 
 export class VulnerablePart {
-    constructor(vulnerableVersionList: Array<string>, javaModule: JavaModule, cve: Cve) { }
+    constructor(readonly vulnerableVersionList: Array<string>, readonly javaModule: JavaModule, readonly cve: Cve) { }
 };
 
 export class Cve {

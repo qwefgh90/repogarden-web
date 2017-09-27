@@ -1,6 +1,6 @@
 import { TreeModel } from 'ng2-tree';
 import { TypoInfo } from './typo-info';
-import { Cve } from './cve'
+import { VulnerableResult } from './cve'
 
 export enum NodeType {
     BLOB,
@@ -26,7 +26,7 @@ export interface GitNode extends TreeModel {
     level?: number;
     githubLink?: string;
     typoInfo?: TypoInfo;
-    cves?: Array<Cve>;
+    cve?: VulnerableResult;
 }
 
 export abstract class Visitor<A, B> {
@@ -100,8 +100,8 @@ export class CveCounter extends Visitor<number, GitNode>{
     }
     acc: number = 0;
     visit(node: GitNode, stack) {
-        if (node.cves != undefined) {
-            this.acc = this.acc + node.cves.length;
+        if (node.cve != undefined) {
+            this.acc = this.acc + node.cve.vulnerableList.length;
         }
     }
 }

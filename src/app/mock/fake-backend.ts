@@ -1,6 +1,6 @@
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHRBackend, RequestOptions, Headers } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { REPOSITORIES, BRANCHES1, COMMITS1, COMMITS2 } from '../mock/mock-repositories';
+import { REPOSITORIES, BRANCHES1, COMMITS1, COMMITS2, CVE_COMMITS1 } from '../mock/mock-repositories';
 import { AUTH_RESPOND } from '../mock/mock-user-info';
 import { tree3 } from '../mock/mock-git-tree';
 import { typoInfo1, typoInfo2 } from '../mock/mock-typo-info';
@@ -45,6 +45,15 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 connection.mockRespond(new Response(new ResponseOptions({
                     status: 200,
                     body: (parseInt((Math.random() * 100).toString()) % 2) == 1 ? COMMITS1 : COMMITS2
+                })));
+                console.info(JSON.stringify(connection.request));
+                return;
+            }
+
+            if (connection.request.url.split('?')[0].endsWith('/cveStats') && connection.request.method === RequestMethod.Get) {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    status: 200,
+                    body: (parseInt((Math.random() * 100).toString()) % 2) == 1 ? CVE_COMMITS1 : COMMITS2
                 })));
                 console.info(JSON.stringify(connection.request));
                 return;
