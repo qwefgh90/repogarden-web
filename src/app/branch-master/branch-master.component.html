@@ -25,12 +25,12 @@
       </template>
       <app-repository-cve-detail [selectedRepository]="repository" [selectedId]="id" [selectedBranch]="selectedBranch"></app-repository-cve-detail>
     </tab>
-    <tab [active]="activeTab == 2" (select)="selectTab('Typo')">
+<!--    <tab [active]="activeTab == 2" (select)="selectTab('Typo')">
       <template tabHeading>
         Typos <small></small>
       </template>
       <app-repository-typo-detail [selectedRepository]="repository" [selectedId]="id" [selectedBranch]="selectedBranch"></app-repository-typo-detail>
-    </tab>
+    </tab> -->
   </tabset>
 </div>
 <div *ngIf="repository?.branches?.length == 0">

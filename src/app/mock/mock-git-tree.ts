@@ -1,5 +1,5 @@
 import { GitNode, NodeType, TreeEntryEx } from '../class/git-node';
-import { cve1, cve2, cve3 } from './mock-cve';
+import { result1 } from './mock-cve';
 
 export const tree3: Array<TreeEntryEx> = [
     { seq: 1, level: 1, name: "pom.xml", path: '', sha: '1111', url: 'http://1111', type: 'blob' },
@@ -27,7 +27,7 @@ export const tree2: GitNode = {
                 {
                     treeSha: 'aaaa', value: 'pom.xml', path: 'test/path',
                     type: NodeType.BLOB, children: []
-                    , cves: [cve1, cve2]
+                    , cve: result1
                 }
             ]
         },

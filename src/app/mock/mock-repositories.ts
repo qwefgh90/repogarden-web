@@ -52,7 +52,7 @@ const commit4: Commit =
 
 export const COMMITS1 = [commit1, commit2, commit3];
 export const COMMITS2 = [];
-export const CVE_COMMITS1 = [commit4];
+export const COMMITS1_WITH_CVE = [commit4];
 
 export const BRANCHES1: Branch[] = [new Branch("master", undefined), new Branch("develop", undefined), new Branch("feature-2", undefined)]
 
